@@ -5,25 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - Microbell Juguetería</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; max-width: 500px; width: 90%; }
-        h1 { color: #2c3e50; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .menu-link { display: block; background: #3498db; color: white; text-decoration: none; padding: 12px; margin: 10px 0; border-radius: 6px; transition: background 0.3s; font-weight: bold; }
-        .menu-link:hover { background: #2980b9; }
-        footer { margin-top: 20px; font-size: 0.8rem; color: #7f8c8d; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+        }
+        .container { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            text-align: center; 
+            max-width: 550px; 
+            width: 100%; 
+        }
+        h1 { color: #2c3e50; margin-bottom: 5px; border-bottom: 3px solid #3498db; display: inline-block; padding-bottom: 5px; }
+        .subtitle { color: #95a5a6; margin-bottom: 2rem; font-weight: 300; }
+        
+        .menu-link { 
+            display: block; 
+            background: #3498db; 
+            color: white; 
+            text-decoration: none; 
+            padding: 15px; 
+            margin: 12px 0; 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+        
+        /* Estilo destacado para el nuevo Dashboard de ML */
+        .ml-highlight {
+            background: #2c3e50;
+            border-left: 5px solid #e67e22; /* Un toque de color para resaltar */
+        }
+
+        .menu-link:hover { 
+            background: #2980b9; 
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .ml-highlight:hover {
+            background: #1a252f;
+        }
+
+        footer { margin-top: 30px; font-size: 0.85rem; color: #bdc3c7; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Microbell Juguetería</h1>
-        <p>Seleccione el reporte que desea visualizar:</p>
+        <p class="subtitle">Sistemas de Análisis y Reportes 2026</p>
         
-       <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">Análisis Competitivo ML</a>
-       <a class="menu-link" href="dashboard_precios_optimos_jugueteria_microbell.html">Dashboard de Precios Óptimos</a>
-       <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">Dashboard de Rentabilidad</a>
-       <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">Dashboard de Fuentes Competetitivos</a> 
+        <a class="menu-link ml-highlight" href="analisis_competitivo_ml_jugueteria_microbell.html">
+            📊 Análisis Competitivo (Machine Learning)
+        </a>
+
+        <a class="menu-link" href="dashboard_precios_optimos_jugueteria_microbell.html">
+            💰 Dashboard de Precios Óptimos
+        </a>
         
-        <footer>Dashboard Administrativo - 2026</footer>
+        <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">
+            📈 Dashboard de Rentabilidad
+        </a>
+
+        <footer>
+            Desarrollado por Eduardo Moreno - Buenos Aires
+        </footer>
     </div>
 </body>
 </html>
