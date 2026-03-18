@@ -6,77 +6,81 @@
     <title>Panel de Control - Microbell Juguetería</title>
     <style>
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             background-color: #f4f7f6; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
             margin: 0; 
-            padding: 20px;
+            padding: 20px; 
+            box-sizing: border-box;
         }
         .container { 
             background: white; 
-            padding: 2rem; 
+            padding: 2.5rem; 
             border-radius: 12px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
             text-align: center; 
             max-width: 500px; 
             width: 100%; 
         }
-        h1 { color: #2c3e50; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        p { color: #7f8c8d; margin-bottom: 1.5rem; }
-        
+        h1 { 
+            color: #2c3e50; 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 10px; 
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
         .menu-link { 
             display: block; 
+            /* Se unificó el color de fondo y letra */
             background: #3498db; 
-            color: white; 
+            color: white !important; /* !important asegura que no cambie el color del texto */
             text-decoration: none; 
-            padding: 12px; 
+            padding: 14px; 
             margin: 10px 0; 
             border-radius: 6px; 
-            transition: all 0.3s ease; 
+            transition: 0.3s ease; 
             font-weight: bold; 
+            font-size: 1rem;
         }
-        
         .menu-link:hover { 
             background: #2980b9; 
-            transform: translateY(-2px);
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
-
-        /* Color diferenciado para resaltar el análisis de competencia */
-        .competencia-link {
-            background: #2c3e50;
+        footer { 
+            margin-top: 25px; 
+            font-size: 0.9rem; 
+            color: #bdc3c7; 
+            border-top: 1px solid #eee;
+            padding-top: 15px;
         }
-        .competencia-link:hover {
-            background: #1a252f;
+        .signature {
+            color: #7f8c8d;
+            font-weight: normal;
         }
-
-        footer { margin-top: 20px; font-size: 0.8rem; color: #bdc3c7; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Microbell Juguetería</h1>
-        <p>Seleccione el reporte analítico:</p>
+        <p class="subtitle">Seleccione el reporte analítico:</p>
         
-        <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">
-            🤖 Predicción Competitiva (ML)
-        </a>
-
-        <a class="menu-link" href="dashboard_precios_optimos_jugueteria_microbell.html">
-            💰 Optimización de Precios
-        </a>
-
-        <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">
-            📈 Análisis de Rentabilidad
-        </a>
-
-        <a class="menu-link competencia-link" href="analisis_competitivo_ml_jugueteria_microbell.html">
-            🔍 Relevamiento: Fuentes y Competidores
-        </a>
+        <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">🤖 Predicción Competitiva (ML)</a>
+        <a class="menu-link" href="dashboard_precios_optimos_jugueteria_microbell.html">💰 Optimización de Precios</a>
+        <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">📈 Análisis de Rentabilidad</a>
+        <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">🔍 Relevamiento: Fuentes y Competidores</a>
         
-        <footer>Dashboard Administrativo - Buenos Aires, 2026</footer>
+        <footer>
+            Dashboard Administrativo - Buenos Aires, 2026<br>
+            <span class="signature">Realizado por Lic. Eduardo Moreno</span>
+        </footer>
     </div>
 </body>
 </html>
