@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Competitivo ML — Juguetería — Microbell S.A.</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#fafaf8;--surface:#fff;--s2:#f4f2ee;--s3:#ece9e3;
+  --border:#e0dbd2;--border2:#ccc6bb;
+  --ink:#1a1814;--ink2:#3d382e;--muted:#8a8070;
+  --green:#1a6b2a;--green-bg:rgba(26,107,42,0.07);
+  --red:#b83200;--red-bg:rgba(184,50,0,0.07);
+  --blue:#1a3f7a;--blue-bg:rgba(26,63,122,0.07);
+  --gold:#8a6800;--gold-bg:rgba(138,104,0,0.08);
+  --warn:#c04800;--orange:#e05000;
+  --purple:#5a1a7a;--purple-bg:rgba(90,26,122,0.07);
+  --font-d:'Unbounded',sans-serif;
+  --font-b:'DM Sans',sans-serif;
+  --font-m:'DM Mono',monospace;
+  --r:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:13px;line-height:1.5;}
+
+header{
+  background:var(--ink);color:#fff;padding:16px 36px;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:200;
+  border-bottom:3px solid var(--orange);
+}
+.logo h1{font-family:var(--font-d);font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#fff;line-height:1.2;}
+.logo p{font-size:0.58rem;color:#aaa;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-m);margin-top:3px;}
+.hmeta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.chip{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:3px;padding:4px 10px;font-family:var(--font-m);font-size:0.58rem;color:#ccc;}
+.chip strong{color:#fff;}
+.chip.hot{background:rgba(184,50,0,0.3);border-color:rgba(184,50,0,0.5);color:#ff9970;}
+.chip.warn{background:rgba(200,120,0,0.3);border-color:rgba(200,120,0,0.5);color:#ffd080;}
+.chip.green{background:rgba(26,107,42,0.3);border-color:rgba(26,107,42,0.5);color:#80e090;}
+
+.mbar{
+  background:var(--gold-bg);border-bottom:2px solid var(--gold);
+  padding:9px 36px;display:flex;gap:0;align-items:stretch;flex-wrap:wrap;
+}
+.ms{display:flex;align-items:center;gap:8px;padding:0 18px 0 0;border-right:1px solid var(--border);margin-right:18px;}
+.ms:last-child{border-right:none;padding-right:0;margin-right:0;}
+.mn{width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--font-m);font-size:0.55rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ml{font-family:var(--font-m);font-size:0.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:1px;}
+.mf{font-family:var(--font-m);font-size:0.68rem;font-weight:600;color:var(--ink);}
+
+.wrap{max-width:1700px;margin:0 auto;padding:20px 36px 60px;}
+
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:24px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;}
+.klbl{font-family:var(--font-m);font-size:0.54rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;}
+.kval{font-family:var(--font-d);font-size:1.4rem;font-weight:700;line-height:1;}
+.ksub{font-size:0.58rem;color:var(--muted);margin-top:3px;font-family:var(--font-m);}
+.kval.green{color:var(--green);}
+.kval.red{color:var(--red);}
+.kval.gold{color:var(--gold);}
+.kval.orange{color:var(--orange);}
+
+.stitle{font-family:var(--font-d);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin:24px 0 14px;display:flex;align-items:center;gap:10px;}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Rubro sections */
+.rubro-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;overflow:hidden;}
+.rubro-header{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+.rubro-header-left{display:flex;align-items:center;gap:14px;}
+.rubro-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.rubro-icon.pelotas{background:#e8f8e8;}
+.rubro-icon.drones{background:#e8eef8;}
+.rubro-icon.gel{background:#f8e8e8;}
+.rubro-icon.burbujas{background:#e8f4f8;}
+.rubro-icon.dardos{background:#f8f0e8;}
+.rhi h2{font-family:var(--font-d);font-size:0.8rem;font-weight:700;letter-spacing:1px;color:var(--ink);}
+.rhi p{font-size:0.62rem;color:var(--muted);font-family:var(--font-m);margin-top:2px;}
+.rubro-badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.rbadge{padding:4px 12px;border-radius:3px;font-family:var(--font-m);font-size:0.58rem;font-weight:600;}
+.rbadge.pos{background:var(--green-bg);color:var(--green);border:1px solid rgba(26,107,42,0.2);}
+.rbadge.neg{background:var(--red-bg);color:var(--red);border:1px solid rgba(184,50,0,0.2);}
+.rbadge.warn{background:rgba(200,120,0,0.1);color:#8a5000;border:1px solid rgba(200,120,0,0.2);}
+.rbadge.blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(26,63,122,0.2);}
+.rbadge.neutral{background:var(--s2);color:var(--ink2);border:1px solid var(--border);}
+
+.rubro-body{display:grid;grid-template-columns:1.4fr 1fr;gap:0;}
+.comp-side{padding:16px 20px;border-right:1px solid var(--border);}
+.chart-side{padding:16px 20px;}
+
+/* Competitor table */
+.comp-table{width:100%;border-collapse:collapse;font-size:0.7rem;}
+.comp-table thead tr{border-bottom:2px solid var(--border2);}
+.comp-table th{padding:7px 10px;font-family:var(--font-m);font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;white-space:nowrap;}
+.comp-table th.r{text-align:right;}
+.comp-table tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+.comp-table tbody tr:hover{background:var(--s2);}
+.comp-table tbody tr.microbell-row{background:rgba(138,104,0,0.06);border-left:3px solid var(--gold);}
+.comp-table tbody tr.optimo-row{background:rgba(26,107,42,0.05);border-left:3px solid var(--green);}
+.comp-table td{padding:7px 10px;vertical-align:middle;}
+.comp-table td.r{text-align:right;font-family:var(--font-m);}
+.prod-name{font-weight:500;color:var(--ink);margin-bottom:1px;}
+.vendedor-name{font-size:0.6rem;color:var(--muted);font-family:var(--font-m);}
+.tier-badge{display:inline-block;padding:1px 6px;border-radius:2px;font-family:var(--font-m);font-size:0.5rem;}
+.tier-plat{background:#f0ecff;color:#4a2880;border:1px solid rgba(74,40,128,0.2);}
+.tier-gold{background:#fff8e0;color:#7a5a00;border:1px solid rgba(122,90,0,0.2);}
+.tier-std{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+.tier-micro{background:rgba(138,104,0,0.12);color:var(--gold);border:1px solid rgba(138,104,0,0.25);}
+.tier-opt{background:rgba(26,107,42,0.12);color:var(--green);border:1px solid rgba(26,107,42,0.25);}
+.price-val{font-family:var(--font-m);font-size:0.75rem;font-weight:600;}
+.price-val.micro{color:var(--gold);}
+.price-val.opt{color:var(--green);}
+.price-val.comp{color:var(--ink);}
+.fuente-tag{font-size:0.5rem;color:var(--muted);font-family:var(--font-m);display:block;margin-top:1px;}
+.gap-tag{font-family:var(--font-m);font-size:0.62rem;}
+.gap-tag.pos{color:var(--green);}
+.gap-tag.neg{color:var(--red);}
+.gap-tag.warn{color:#c07800;}
+
+/* Position indicator */
+.pos-bar{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+.pb-label{font-family:var(--font-m);font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;}
+.pb-track{position:relative;height:6px;background:var(--s3);border-radius:3px;margin-bottom:20px;}
+.pb-fill{position:absolute;left:0;top:0;height:100%;border-radius:3px;}
+.pb-fill.low{background:#c05800;}
+.pb-fill.ok{background:var(--green);}
+.pb-fill.high{background:var(--red);}
+.pb-marker{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);transform:translateX(-50%);}
+.pb-marker.micro{background:var(--gold);}
+.pb-marker.opt{background:var(--green);}
+.pb-labels{display:flex;justify-content:space-between;font-family:var(--font-m);font-size:0.55rem;color:var(--muted);margin-top:-14px;}
+
+.reco-box{background:var(--green-bg);border:1px solid rgba(26,107,42,0.2);border-radius:4px;padding:10px 14px;margin-top:12px;}
+.reco-box.warn{background:rgba(200,120,0,0.08);border-color:rgba(200,120,0,0.25);}
+.reco-box.red{background:var(--red-bg);border-color:rgba(184,50,0,0.25);}
+.reco-title{font-family:var(--font-m);font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;}
+.reco-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+.reco-lbl{font-size:0.68rem;color:var(--ink2);}
+.reco-price{font-family:var(--font-m);font-size:0.85rem;font-weight:700;}
+.reco-price.green{color:var(--green);}
+.reco-price.warn{color:#c07800;}
+.reco-price.red{color:var(--red);}
+.reco-note{font-size:0.6rem;color:var(--muted);margin-top:4px;line-height:1.5;}
+
+/* SKU pills */
+.sku-pills{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+.sku-pill{display:inline-flex;align-items:center;gap:4px;background:var(--s2);border:1px solid var(--border);border-radius:3px;padding:2px 8px;font-family:var(--font-m);font-size:0.58rem;}
+.sku-pill.alerta{background:var(--red-bg);border-color:rgba(184,50,0,0.2);color:var(--red);}
+.sku-pill.sobre{background:rgba(200,120,0,0.1);border-color:rgba(200,120,0,0.2);color:#8a5000;}
+
+/* Chart */
+.chart-title{font-family:var(--font-m);font-size:0.55rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;}
+canvas.comp-chart{max-height:280px;}
+
+/* Summary table */
+.sum-table{width:100%;border-collapse:collapse;font-size:0.72rem;}
+.sum-table thead tr{border-bottom:2px solid var(--border2);}
+.sum-table th{padding:9px 14px;font-family:var(--font-m);font-size:0.58rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);background:var(--s2);}
+.sum-table th.r{text-align:right;}
+.sum-table tbody tr{border-bottom:1px solid var(--border);}
+.sum-table tbody tr:hover{background:var(--s2);}
+.sum-table td{padding:9px 14px;vertical-align:middle;}
+.sum-table td.r{text-align:right;font-family:var(--font-m);}
+.posicion{display:inline-block;padding:2px 8px;border-radius:12px;font-family:var(--font-m);font-size:0.58rem;font-weight:600;}
+.pos-muy-bajo{background:#fff0e0;color:#c04800;border:1px solid rgba(192,72,0,0.2);}
+.pos-bajo{background:#fffae0;color:#8a6000;border:1px solid rgba(138,96,0,0.2);}
+.pos-ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(26,107,42,0.2);}
+.pos-sobre{background:var(--red-bg);color:var(--red);border:1px solid rgba(184,50,0,0.2);}
+
+.uplift{font-family:var(--font-m);font-size:0.65rem;font-weight:600;}
+.uplift.pos{color:var(--green);}
+.uplift.neg{color:var(--red);}
+
+/* Conc */
+.conc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.conc{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:var(--r);padding:14px 18px;}
+.conc.warn{border-left-color:#c07800;}
+.conc.red{border-left-color:var(--red);}
+.conc.blue{border-left-color:var(--blue);}
+.conc h4{font-family:var(--font-m);font-size:0.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--ink);margin-bottom:6px;}
+.conc p{font-size:0.7rem;color:var(--ink2);line-height:1.6;}
+.conc strong{color:var(--ink);}
+
+footer{background:var(--ink);color:#666;padding:14px 36px;font-size:0.58rem;font-family:var(--font-m);display:flex;justify-content:space-between;align-items:center;}
+
+@media(max-width:1100px){
+  .rubro-body{grid-template-columns:1fr;}
+  .comp-side{border-right:none;border-bottom:1px solid var(--border);}
+  .kpis{grid-template-columns:repeat(3,1fr);}
+  .conc-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <h1>MICROBELL S.A.</h1>
+    <p>Análisis Competitivo Mercado Libre — Juguetería General</p>
+  </div>
+  <div class="hmeta">
+    <div class="chip">Fecha: <strong>18/03/2026</strong></div>
+    <div class="chip">TC Blue: <strong>$1.475 ARS/USD</strong></div>
+    <div class="chip">Rubros: <strong>7 Categorías</strong></div>
+    <div class="chip warn">⚠️ 3 Rubros con precio bajo mercado</div>
+    <div class="chip hot">🔴 1 Rubro sobre-precio</div>
+    <div class="chip green">✅ 3 Rubros bien posicionados</div>
+  </div>
+</header>
+
+<div class="mbar">
+  <div class="ms"><div class="mn">📊</div><div><div class="ml">Fuentes de precios</div><div class="mf">ML Argentina + Google snippets</div></div></div>
+  <div class="ms"><div class="mn">🏷️</div><div><div class="ml">Precio Óptimo</div><div class="mf">MAX(ML_Comp×0.85 ; Piso×1.20)</div></div></div>
+  <div class="ms"><div class="mn">📌</div><div><div class="ml">Piso Operativo</div><div class="mf">Costo × 1.50 (cubre gastos canal)</div></div></div>
+  <div class="ms"><div class="mn">⚠️</div><div><div class="ml">Nota metodológica</div><div class="mf">Precios "Estimado" = rango de mercado inferido</div></div></div>
+</div>
+
+<div class="wrap">
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi"><div class="klbl">Rubros Analizados</div><div class="kval">7</div><div class="ksub">+ SKUs individuales</div></div>
+  <div class="kpi"><div class="klbl">Competidores Relevados</div><div class="kval gold">28</div><div class="ksub">Vendedores identificados en ML</div></div>
+  <div class="kpi"><div class="klbl">Stock en Análisis</div><div class="kval">36.863</div><div class="ksub">Unidades impactadas</div></div>
+  <div class="kpi"><div class="klbl">Rubros Bajo Mercado</div><div class="kval orange">3</div><div class="ksub">Pelotas Fútbol N5, N3 y Voley</div></div>
+  <div class="kpi"><div class="klbl">Gap Pelotas N5</div><div class="kval red">−43%</div><div class="ksub">Microbell vs mínimo competidor</div></div>
+  <div class="kpi"><div class="klbl">Oportunidad Ingresos</div><div class="kval green">+$8.2M</div><div class="ksub">Uplift mensual estimado pelotas</div></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECCIÓN 1: PELOTAS FÚTBOL N5 -->
+<!-- ============================================================ -->
+<div class="stitle">⚽ Pelotas de Fútbol — Segmento N5 PVC</div>
+
+<div class="rubro-section">
+  <div class="rubro-header">
+    <div class="rubro-header-left">
+      <div class="rubro-icon pelotas">⚽</div>
+      <div class="rhi">
+        <h2>PELOTAS FÚTBOL N5 (VOLT / FURY)</h2>
+        <p>6 SKUs activos · 22.130 unidades en stock · Mayor categoría del Top 30</p>
+      </div>
+    </div>
+    <div class="rubro-badges">
+      <span class="rbadge neg">🔴 PRECIO 43% BAJO MERCADO</span>
+      <span class="rbadge blue">📦 22.130 unidades</span>
+      <span class="rbadge neutral">Margen óptimo: 79.2%</span>
+    </div>
+  </div>
+  <div class="rubro-body">
+    <div class="comp-side">
+      <div class="sku-pills">
+        <span class="sku-pill">03358 VOLT Verde/Negro</span>
+        <span class="sku-pill">03359 VOLT Rojo/Negro</span>
+        <span class="sku-pill">03357 VOLT Celeste/Azul</span>
+        <span class="sku-pill">03362 FURY Naranja</span>
+        <span class="sku-pill">03361 FURY Verde</span>
+        <span class="sku-pill">03360 FURY Celeste</span>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Producto / Vendedor</th>
+            <th>Tipo</th>
+            <th class="r">Precio ML</th>
+            <th class="r">vs Microbell</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="microbell-row">
+            <td>
+              <div class="prod-name">⭐ Microbell — VOLT N5 PVC (actual)</div>
+              <div class="vendedor-name">Microbell S.A. · Publicación actual ML</div>
+            </td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$11.788</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">Lista × 1.80</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="prod-name">Nassau Championship Pro N5 PVC</div>
+              <div class="vendedor-name">Warriors Deportes · Líder Gold ML</div>
+            </td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$21.500</span></td>
+            <td class="r"><span class="gap-tag pos">+82%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="prod-name">EZ Life PVC Color N°5 (32 paneles)</div>
+              <div class="vendedor-name">ByPlaysport · Líder Platinum ML</div>
+            </td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$29.000</span></td>
+            <td class="r"><span class="gap-tag pos">+146%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">byplaysport.com.ar</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="prod-name">Kagiva N5 Campo PVC Laminado</div>
+              <div class="vendedor-name">Deportivo y Marcial · Líder Gold ML</div>
+            </td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$33.745</span></td>
+            <td class="r"><span class="gap-tag pos">+186%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">deportivoymarcial.com.ar</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="prod-name">DRB Copa Mundial 2026 N°5 PVC Foam</div>
+              <div class="vendedor-name">Kadur Sport · Líder Platinum ML</div>
+            </td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$39.356</span></td>
+            <td class="r"><span class="gap-tag pos">+234%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">kadursport.com.ar</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td>
+              <div class="prod-name">✅ Precio Óptimo Recomendado (VOLT N5)</div>
+              <div class="vendedor-name">MAX($21.000×0.85 ; $5.576×1.20)</div>
+            </td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$17.850</span></td>
+            <td class="r"><span class="gap-tag pos">+51%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 79.2%</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td>
+              <div class="prod-name">✅ Precio Óptimo Recomendado (FURY N5)</div>
+              <div class="vendedor-name">MAX($28.000×0.85 ; $6.992×1.20)</div>
+            </td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$23.800</span></td>
+            <td class="r"><span class="gap-tag pos">+19%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 80.4%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="reco-box">
+        <div class="reco-title">💡 Recomendación de Precio</div>
+        <div class="reco-row"><span class="reco-lbl">VOLT N5 (actual)</span><span class="reco-price">$11.788</span></div>
+        <div class="reco-row"><span class="reco-lbl">→ VOLT N5 Óptimo</span><span class="reco-price green">$17.850 (+$6.062 / +51%)</span></div>
+        <div class="reco-row"><span class="reco-lbl">FURY N5 (actual)</span><span class="reco-price">$20.045</span></div>
+        <div class="reco-row"><span class="reco-lbl">→ FURY N5 Óptimo</span><span class="reco-price green">$23.800 (+$3.755 / +19%)</span></div>
+        <div class="reco-note">Impacto estimado en stock actual: <strong>+$57.7M ARS</strong> adicionales al vender las 22.130 unidades al precio óptimo vs precio actual. Se sigue publicando 15% bajo el competidor más económico del segmento (Nassau $21.500).</div>
+      </div>
+    </div>
+    <div class="chart-side">
+      <div class="chart-title">Comparativo de precios — Pelotas Fútbol N5 PVC</div>
+      <canvas class="comp-chart" id="chartPelotaN5"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECCIÓN 2: PELOTAS N3 + BÁSQUET + VOLEY -->
+<!-- ============================================================ -->
+<div class="stitle">🏀 Pelotas Deportivas — Básquet N7, Voley N5, Fútbol N3</div>
+
+<div class="rubro-section">
+  <div class="rubro-header">
+    <div class="rubro-header-left">
+      <div class="rubro-icon pelotas">🏀</div>
+      <div class="rhi">
+        <h2>BÁSQUET N7 / VOLEY N5 / FÚTBOL N3</h2>
+        <p>6 SKUs · 5.755 unidades · Categorías con oportunidad de reposicionamiento</p>
+      </div>
+    </div>
+    <div class="rubro-badges">
+      <span class="rbadge warn">⚠️ 15-28% BAJO MERCADO</span>
+      <span class="rbadge blue">📦 5.755 unidades</span>
+      <span class="rbadge neutral">Margen óptimo: 80-83%</span>
+    </div>
+  </div>
+  <div class="rubro-body">
+    <div class="comp-side">
+      <div class="sku-pills">
+        <span class="sku-pill">03370 Basquet DASH N7</span>
+        <span class="sku-pill">03363 Voley AERO N5</span>
+        <span class="sku-pill">03369 NEO N3 Rosa</span>
+        <span class="sku-pill">03367 NEO N3 Verde</span>
+        <span class="sku-pill">03368 NEO N3 Celeste</span>
+        <span class="sku-pill">03364 LED 6" Multicolor</span>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Producto / Vendedor</th>
+            <th>Tipo</th>
+            <th class="r">Precio ML</th>
+            <th class="r">vs Microbell</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — Basquet DASH N7 (actual)</div><div class="vendedor-name">Lista $11.785 × 1.80</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$21.213</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Pelota Básquet Grande N°7 Goma</div><div class="vendedor-name">Veoquiero.ar · Vendedor Standard</div></td>
+            <td><span class="tier-badge tier-std">Standard</span></td>
+            <td class="r"><span class="price-val comp">$10.799</span></td>
+            <td class="r"><span class="gap-tag neg">−49%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">veoquiero.ar</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">EZ Life Básquet N7 Goma Entrenamiento</div><div class="vendedor-name">EZ Life · Líder Gold ML</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$18.000</span></td>
+            <td class="r"><span class="gap-tag neg">−15%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Spalding TF-150 N7 Goma FIBA Outdoor</div><div class="vendedor-name">Varios ML · Líder Platinum</div></td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$31.852</span></td>
+            <td class="r"><span class="gap-tag pos">+50%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Basquet DASH N7</div><div class="vendedor-name">MAX($27.000×0.85 ; $6.504×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$22.950</span></td>
+            <td class="r"><span class="gap-tag pos">+8%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 81.1%</span></td>
+          </tr>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — Voley AERO N5 (actual)</div><div class="vendedor-name">Lista $10.472 × 1.80</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$18.850</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">EZ Life Voley PVC Goma N5</div><div class="vendedor-name">EZ Life · Líder Gold ML</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$13.000</span></td>
+            <td class="r"><span class="gap-tag neg">−31%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Kagiva Voley Oficial PVC N5 Profesional</div><div class="vendedor-name">Kagiva Deportes · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$20.000</span></td>
+            <td class="r"><span class="gap-tag pos">+6%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Voley Molten Oficial N5 Entrenamiento</div><div class="vendedor-name">Varios ML · Líder Platinum</div></td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$28.000</span></td>
+            <td class="r"><span class="gap-tag pos">+49%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Voley AERO N5</div><div class="vendedor-name">MAX($26.000×0.85 ; $6.903×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$22.100</span></td>
+            <td class="r"><span class="gap-tag pos">+17%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 79.2%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-side">
+      <div class="chart-title">Comparativo precios — Básquet N7 y Voley N5</div>
+      <canvas class="comp-chart" id="chartOtrasP"></canvas>
+      <div class="reco-box" style="margin-top:14px;">
+        <div class="reco-title">💡 Recomendaciones Multi-pelota</div>
+        <div class="reco-row"><span class="reco-lbl">Basquet DASH N7: $21.213 → </span><span class="reco-price green">$22.950 (+$1.737)</span></div>
+        <div class="reco-row"><span class="reco-lbl">Voley AERO N5: $18.850 → </span><span class="reco-price green">$22.100 (+$3.250)</span></div>
+        <div class="reco-row"><span class="reco-lbl">NEO N3 (fútbol): $8.230 → </span><span class="reco-price green">$12.325 (+$4.095)</span></div>
+        <div class="reco-note">El DASH N7 compite en el segmento medio entre el básico ($10.799) y el Spalding ($31.852). Subir a $22.950 es justificable y mantiene margen >80%. El Voley AERO puede subir sin perder competitividad.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECCIÓN 3: DRONES JUGUETE -->
+<!-- ============================================================ -->
+<div class="stitle">🚁 Drones Juguete — OVNI / Giratorio LED</div>
+
+<div class="rubro-section">
+  <div class="rubro-header">
+    <div class="rubro-header-left">
+      <div class="rubro-icon drones">🚁</div>
+      <div class="rhi">
+        <h2>DRONES JUGUETE (OVNI / LED 360°)</h2>
+        <p>2 SKUs · 2.080 unidades · 1 alerta bajo piso · 1 en sobre-precio relativo</p>
+      </div>
+    </div>
+    <div class="rubro-badges">
+      <span class="rbadge neg">⛔ 03427 BAJO PISO OPERATIVO</span>
+      <span class="rbadge warn">⚠️ 03426 Levemente sobre-precio ML</span>
+      <span class="rbadge blue">📦 2.080 unidades</span>
+    </div>
+  </div>
+  <div class="rubro-body">
+    <div class="comp-side">
+      <div class="sku-pills">
+        <span class="sku-pill alerta">⛔ 03427 Drone OVNI — Lista $11.888 < Piso $12.059</span>
+        <span class="sku-pill sobre">⚠️ 03426 Drone Giratorio LED — ML > ML Mercado</span>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Producto / Vendedor</th>
+            <th>Tipo</th>
+            <th class="r">Precio ML</th>
+            <th class="r">vs Micro OVNI</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — Drone OVNI Battle (actual)</div><div class="vendedor-name">Lista $11.888 × 1.80 · ⚠️ Lista < Piso</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$21.398</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — Drone Giratorio LED 360° (actual)</div><div class="vendedor-name">Lista $11.402 × 1.80 · ⚠️ Sobre ML_Sim</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$20.524</span></td>
+            <td class="r"><span class="gap-tag neg">+2%</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Mini Drone LED Giroscópico Infantil</div><div class="vendedor-name">Varios vendedores · Standard</div></td>
+            <td><span class="tier-badge tier-std">Standard</span></td>
+            <td class="r"><span class="price-val comp">$15.000</span></td>
+            <td class="r"><span class="gap-tag neg">−30%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Drone OVNI Spinner USB Recargable</div><div class="vendedor-name">Varios ML · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$22.000</span></td>
+            <td class="r"><span class="gap-tag pos">+3%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">ML listado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Drone RC Toy Básico Con Luces</div><div class="vendedor-name">Electroland Tec. · Líder Platinum</div></td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$25.000</span></td>
+            <td class="r"><span class="gap-tag pos">+17%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">ML listado</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Drone OVNI</div><div class="vendedor-name">MAX($22.000×0.85 ; $12.059×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$18.700</span></td>
+            <td class="r"><span class="gap-tag neg">−13%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 57.0%</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Drone Giratorio LED</div><div class="vendedor-name">MAX($20.000×0.85 ; $8.784×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$17.000</span></td>
+            <td class="r"><span class="gap-tag neg">−17%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 65.6%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="reco-box red">
+        <div class="reco-title">⛔ Alerta Crítica — Drone OVNI 03427</div>
+        <div class="reco-row"><span class="reco-lbl">Lista PDF actual</span><span class="reco-price red">$11.888 (BAJO PISO $12.059)</span></div>
+        <div class="reco-row"><span class="reco-lbl">→ Lista debe actualizarse a</span><span class="reco-price green">Mínimo $15.573</span></div>
+        <div class="reco-note">El Piso Operativo ($12.059) está por encima del precio de lista actual. Esto significa que la publicación en ML no cubre los gastos operativos del canal. Actualizar precio de lista urgente o contactar proveedor para renegociar costo.</div>
+      </div>
+    </div>
+    <div class="chart-side">
+      <div class="chart-title">Comparativo precios — Drones Juguete</div>
+      <canvas class="comp-chart" id="chartDrones"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECCIÓN 4: GEL BLASTERS -->
+<!-- ============================================================ -->
+<div class="stitle">🔫 Gel Blasters — Desert Eagle / UZI Eléctrico</div>
+
+<div class="rubro-section">
+  <div class="rubro-header">
+    <div class="rubro-header-left">
+      <div class="rubro-icon gel">🔫</div>
+      <div class="rhi">
+        <h2>GEL BLASTERS ELÉCTRICOS</h2>
+        <p>2 SKUs · 1.556 unidades · Desert Eagle sobre-precio vs mercado · UZI bien posicionado</p>
+      </div>
+    </div>
+    <div class="rubro-badges">
+      <span class="rbadge neg">🔴 Desert Eagle +13% SOBRE-PRECIO ML</span>
+      <span class="rbadge pos">✅ UZI Bien posicionado</span>
+      <span class="rbadge blue">📦 1.556 unidades</span>
+    </div>
+  </div>
+  <div class="rubro-body">
+    <div class="comp-side">
+      <div class="sku-pills">
+        <span class="sku-pill sobre">⚠️ 03561 Desert Eagle — ML $47.657 > Mercado $42.000</span>
+        <span class="sku-pill">✅ 03403 UZI — ML $57.827 vs Mercado $68.000</span>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Producto / Vendedor</th>
+            <th>Tipo</th>
+            <th class="r">Precio ML</th>
+            <th class="r">vs Micro D.E.</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — Desert Eagle Eléctrico (actual)</div><div class="vendedor-name">Lista $26.476 × 1.80 · ⚠️ Sobre mercado</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$47.657</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Pistola Hidrogel Glock Eléctrica</div><div class="vendedor-name">Varios ML · Standard/Gold</div></td>
+            <td><span class="tier-badge tier-std">Standard</span></td>
+            <td class="r"><span class="price-val comp">$35.000</span></td>
+            <td class="r"><span class="gap-tag neg">−27%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Gel Blaster Desert Eagle Eléctrico</div><div class="vendedor-name">Varios ML · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$42.000</span></td>
+            <td class="r"><span class="gap-tag neg">−12%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Desert Eagle</div><div class="vendedor-name">MAX($42.000×0.85 ; $18.540×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$35.700</span></td>
+            <td class="r"><span class="gap-tag neg">−25%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 65.4%</span></td>
+          </tr>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — UZI Eléctrico Automático (actual)</div><div class="vendedor-name">Lista $32.126 × 1.80 · OK vs mercado</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$57.827</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Rifle Gel Blaster UZI Automático</div><div class="vendedor-name">Varios ML · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$65.000</span></td>
+            <td class="r"><span class="gap-tag pos">+12%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Gel Blaster UZI Full Auto Premium</div><div class="vendedor-name">Varios ML · Líder Platinum</div></td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$70.000</span></td>
+            <td class="r"><span class="gap-tag pos">+21%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo UZI Eléctrico</div><div class="vendedor-name">MAX($68.000×0.85 ; $22.502×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$57.800</span></td>
+            <td class="r"><span class="gap-tag">≈ Igual</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 74.0%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="reco-box warn">
+        <div class="reco-title">⚠️ Ajuste requerido — Desert Eagle</div>
+        <div class="reco-row"><span class="reco-lbl">Desert Eagle actual</span><span class="reco-price">$47.657</span></div>
+        <div class="reco-row"><span class="reco-lbl">→ Bajar a precio óptimo</span><span class="reco-price green">$35.700 (−25%)</span></div>
+        <div class="reco-row"><span class="reco-lbl">UZI: mantener precio</span><span class="reco-price green">$57.800 ✅</span></div>
+        <div class="reco-note">El Desert Eagle a $47.657 está 13% por encima del mercado ML ($42.000). Bajar a $35.700 lo posiciona como mejor precio del segmento. El UZI está correctamente posicionado.</div>
+      </div>
+    </div>
+    <div class="chart-side">
+      <div class="chart-title">Comparativo precios — Gel Blasters</div>
+      <canvas class="comp-chart" id="chartGel"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECCIÓN 5: BURBUJAS -->
+<!-- ============================================================ -->
+<div class="stitle">🫧 Burbujas — Revólveres y Bazookas</div>
+
+<div class="rubro-section">
+  <div class="rubro-header">
+    <div class="rubro-header-left">
+      <div class="rubro-icon burbujas">🫧</div>
+      <div class="rhi">
+        <h2>PISTOLAS Y BAZOOKAS DE BURBUJAS</h2>
+        <p>5 SKUs · 3.451 unidades · Revólveres 8H sobre-precio · Bazookas OK</p>
+      </div>
+    </div>
+    <div class="rubro-badges">
+      <span class="rbadge neg">🔴 Revólveres 8H sobre-precio ML</span>
+      <span class="rbadge pos">✅ Bazookas 45H OK</span>
+      <span class="rbadge blue">📦 3.451 unidades</span>
+    </div>
+  </div>
+  <div class="rubro-body">
+    <div class="comp-side">
+      <div class="sku-pills">
+        <span class="sku-pill sobre">⚠️ 03552 Capibara 8H — ML $14.576 > ML_Sim $14.500</span>
+        <span class="sku-pill sobre">⚠️ 03553 Delfin 8H — ML $14.576 > ML_Sim $14.500</span>
+        <span class="sku-pill sobre">⚠️ 03398 Revolver 8H — ML $14.576 > ML_Sim $14.500</span>
+        <span class="sku-pill">✅ 03402 Bazooka 45H — ML $20.842 vs $22.000</span>
+        <span class="sku-pill">✅ 03404 Bazooka Azul — ML $18.585 vs $22.000</span>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Producto / Vendedor</th>
+            <th>Tipo</th>
+            <th class="r">Precio ML</th>
+            <th class="r">vs Micro 8H</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — Revólver 8 Huecos (actual)</div><div class="vendedor-name">03552/03553/03398 · Lista $8.098 × 1.80</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$14.576</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Burbujero Pistola Automática Básico</div><div class="vendedor-name">Varios ML · Standard</div></td>
+            <td><span class="tier-badge tier-std">Standard</span></td>
+            <td class="r"><span class="price-val comp">$13.341</span></td>
+            <td class="r"><span class="gap-tag neg">−8%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">ML snippet</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Pistola Burbujas Con Luces Infantil</div><div class="vendedor-name">Ditoys/Explorer Fan · Standard</div></td>
+            <td><span class="tier-badge tier-std">Standard</span></td>
+            <td class="r"><span class="price-val comp">$21.599</span></td>
+            <td class="r"><span class="gap-tag pos">+48%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">ML snippet</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Pistola Burbujas Grande (modelos populares)</div><div class="vendedor-name">Varios ML · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$24.999</span></td>
+            <td class="r"><span class="gap-tag pos">+71%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">ML snippet</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Bazooka Burbujas 45+ Huecos</div><div class="vendedor-name">Varios ML · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$32.890</span></td>
+            <td class="r"><span class="gap-tag pos">+126%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">ML snippet</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Revólver 8H</div><div class="vendedor-name">MAX($14.500×0.85 ; $7.854×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$12.325</span></td>
+            <td class="r"><span class="gap-tag neg">−15%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 57.5%</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Bazooka 45H</div><div class="vendedor-name">MAX($22.000×0.85 ; $8.208×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$18.700</span></td>
+            <td class="r"><span class="gap-tag neg">−10%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 70.7%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="reco-box warn">
+        <div class="reco-title">⚠️ Ajuste Burbujas 8 Huecos</div>
+        <div class="reco-row"><span class="reco-lbl">Revólveres 8H actuales</span><span class="reco-price">$14.576</span></div>
+        <div class="reco-row"><span class="reco-lbl">→ Precio óptimo</span><span class="reco-price green">$12.325 (−15%)</span></div>
+        <div class="reco-note">Los revólveres de 8 huecos están marginalmente sobre el precio de mercado ($14.500). El óptimo es $12.325 para ganar volumen. Las bazookas de 45 huecos están bien posicionadas, sin cambio urgente.</div>
+      </div>
+    </div>
+    <div class="chart-side">
+      <div class="chart-title">Comparativo precios — Burbujas</div>
+      <canvas class="comp-chart" id="chartBurbujas"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECCIÓN 6: DARDOS EVA -->
+<!-- ============================================================ -->
+<div class="stitle">🎯 Dardos EVA — Pistolas, Escopetas y Semi Automáticas</div>
+
+<div class="rubro-section">
+  <div class="rubro-header">
+    <div class="rubro-header-left">
+      <div class="rubro-icon dardos">🎯</div>
+      <div class="rhi">
+        <h2>DARDOS EVA — PISTOLAS Y ESCOPETAS</h2>
+        <p>4 SKUs · 1.891 unidades · Segmento mixto: M1911 sobre-precio / Escopeta OK</p>
+      </div>
+    </div>
+    <div class="rubro-badges">
+      <span class="rbadge neg">🔴 M1911 Sobre-precio ML</span>
+      <span class="rbadge pos">✅ Escopetas bien posicionadas</span>
+      <span class="rbadge blue">📦 1.891 unidades</span>
+    </div>
+  </div>
+  <div class="rubro-body">
+    <div class="comp-side">
+      <div class="sku-pills">
+        <span class="sku-pill sobre">⚠️ 03394 M1911+Revolver — ML $22.090 vs Mercado $22.000</span>
+        <span class="sku-pill">✅ 03395 Semi Auto M3 — ML $32.816 vs $35.000</span>
+        <span class="sku-pill">✅ 03396 Escopeta c/Mira — ML $40.462 vs $45.000</span>
+        <span class="sku-pill">✅ 03397 Semi Auto Grande — ML $54.135 vs $55.000</span>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Producto / Vendedor</th>
+            <th>Tipo</th>
+            <th class="r">Precio ML</th>
+            <th class="r">vs Micro M1911</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="microbell-row">
+            <td><div class="prod-name">⭐ Microbell — M1911 + Revolver Set (actual)</div><div class="vendedor-name">03394 · Lista $12.272 × 1.80</div></td>
+            <td><span class="tier-badge tier-micro">MICROBELL</span></td>
+            <td class="r"><span class="price-val micro">$22.090</span></td>
+            <td class="r"><span class="gap-tag">BASE</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Set Armas Policía con Dardos EVA</div><div class="vendedor-name">Game Vault · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$28.900</span></td>
+            <td class="r"><span class="gap-tag pos">+31%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">gamevaultweb.com.ar</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Pistola Escopeta Lanza Dardos (básico)</div><div class="vendedor-name">Ali Trade · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$30.544</span></td>
+            <td class="r"><span class="gap-tag pos">+38%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted)">alitrade.com.ar</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Pistola Semi Auto Dardos Espuma EVA</div><div class="vendedor-name">Varios ML · Líder Gold</div></td>
+            <td><span class="tier-badge tier-gold">Líder Gold</span></td>
+            <td class="r"><span class="price-val comp">$36.000</span></td>
+            <td class="r"><span class="gap-tag pos">+63%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr>
+            <td><div class="prod-name">Escopeta EVA con Mira c/Cargador</div><div class="vendedor-name">Varios ML · Líder Platinum</div></td>
+            <td><span class="tier-badge tier-plat">Líder Platinum</span></td>
+            <td class="r"><span class="price-val comp">$45.000</span></td>
+            <td class="r"><span class="gap-tag pos">+104%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--muted);font-style:italic">Estimado</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo M1911 + Revolver</div><div class="vendedor-name">MAX($22.000×0.85 ; $9.204×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$18.700</span></td>
+            <td class="r"><span class="gap-tag neg">−15%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 67.2%</span></td>
+          </tr>
+          <tr class="optimo-row">
+            <td><div class="prod-name">✅ Óptimo Escopeta Recortada c/Mira</div><div class="vendedor-name">MAX($45.000×0.85 ; $17.478×1.20)</div></td>
+            <td><span class="tier-badge tier-opt">ÓPTIMO</span></td>
+            <td class="r"><span class="price-val opt">$38.250</span></td>
+            <td class="r"><span class="gap-tag neg">−5%</span></td>
+            <td><span style="font-size:0.58rem;color:var(--green)">Margen 69.5%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="reco-box warn">
+        <div class="reco-title">⚠️ Ajuste Dardos EVA — M1911</div>
+        <div class="reco-row"><span class="reco-lbl">M1911+Revolver actual</span><span class="reco-price">$22.090</span></div>
+        <div class="reco-row"><span class="reco-lbl">→ Precio óptimo</span><span class="reco-price green">$18.700 (−15%)</span></div>
+        <div class="reco-row"><span class="reco-lbl">Escopeta c/Mira: $40.462 →</span><span class="reco-price green">$38.250 (−5%)</span></div>
+        <div class="reco-row"><span class="reco-lbl">Semi Auto M3: $32.816 →</span><span class="reco-price green">$29.750 (−9%)</span></div>
+        <div class="reco-note">El M1911 está margialmente sobre precio de mercado. Bajar a $18.700 activa volumen. El resto del portafolio de dardos está bien posicionado o puede ajustarse levemente para mejorar conversión.</div>
+      </div>
+    </div>
+    <div class="chart-side">
+      <div class="chart-title">Comparativo precios — Dardos EVA</div>
+      <canvas class="comp-chart" id="chartDardos"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TABLA RESUMEN -->
+<!-- ============================================================ -->
+<div class="stitle">📋 Resumen Ejecutivo por Rubro</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:auto;">
+<table class="sum-table">
+  <thead>
+    <tr>
+      <th>Rubro</th>
+      <th>SKUs</th>
+      <th class="r">Stock</th>
+      <th class="r">ML Microbell (prom)</th>
+      <th class="r">Precio Competidor Mín.</th>
+      <th class="r">Precio Competidor Máx.</th>
+      <th class="r">Precio Óptimo (prom)</th>
+      <th class="r">Margen Óptimo</th>
+      <th class="r">Uplift vs Actual</th>
+      <th>Posición</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Pelotas Fútbol N5</strong></td>
+      <td class="r">6</td>
+      <td class="r" style="font-family:var(--font-m)">22.130</td>
+      <td class="r" style="font-family:var(--font-m)">$15.916</td>
+      <td class="r" style="font-family:var(--font-m)">$21.500</td>
+      <td class="r" style="font-family:var(--font-m)">$39.356</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$20.825</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">79.2%</td>
+      <td class="r"><span class="uplift pos">+$4.909 / +31%</span></td>
+      <td><span class="posicion pos-muy-bajo">🔴 Muy bajo</span></td>
+    </tr>
+    <tr>
+      <td><strong>Pelotas N3 / LED</strong></td>
+      <td class="r">4</td>
+      <td class="r" style="font-family:var(--font-m)">2.531</td>
+      <td class="r" style="font-family:var(--font-m)">$7.646</td>
+      <td class="r" style="font-family:var(--font-m)">$9.000</td>
+      <td class="r" style="font-family:var(--font-m)">$16.800</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$12.325</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">83.7%</td>
+      <td class="r"><span class="uplift pos">+$4.679 / +61%</span></td>
+      <td><span class="posicion pos-muy-bajo">🔴 Muy bajo</span></td>
+    </tr>
+    <tr>
+      <td><strong>Básquet N7</strong></td>
+      <td class="r">1</td>
+      <td class="r" style="font-family:var(--font-m)">1.712</td>
+      <td class="r" style="font-family:var(--font-m)">$21.213</td>
+      <td class="r" style="font-family:var(--font-m)">$10.799</td>
+      <td class="r" style="font-family:var(--font-m)">$31.852</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$22.950</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">81.1%</td>
+      <td class="r"><span class="uplift pos">+$1.737 / +8%</span></td>
+      <td><span class="posicion pos-bajo">⚠️ Bajo</span></td>
+    </tr>
+    <tr>
+      <td><strong>Voley N5</strong></td>
+      <td class="r">1</td>
+      <td class="r" style="font-family:var(--font-m)">1.512</td>
+      <td class="r" style="font-family:var(--font-m)">$18.850</td>
+      <td class="r" style="font-family:var(--font-m)">$13.000</td>
+      <td class="r" style="font-family:var(--font-m)">$28.000</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$22.100</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">79.2%</td>
+      <td class="r"><span class="uplift pos">+$3.250 / +17%</span></td>
+      <td><span class="posicion pos-bajo">⚠️ Bajo</span></td>
+    </tr>
+    <tr>
+      <td><strong>Drones Juguete</strong></td>
+      <td class="r">2</td>
+      <td class="r" style="font-family:var(--font-m)">2.080</td>
+      <td class="r" style="font-family:var(--font-m)">$20.961</td>
+      <td class="r" style="font-family:var(--font-m)">$15.000</td>
+      <td class="r" style="font-family:var(--font-m)">$25.000</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$17.850</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">61.1%</td>
+      <td class="r"><span class="uplift neg">−$3.111 / −15%</span></td>
+      <td><span class="posicion pos-sobre">🔴 Sobre-precio</span></td>
+    </tr>
+    <tr>
+      <td><strong>Gel Blasters</strong></td>
+      <td class="r">2</td>
+      <td class="r" style="font-family:var(--font-m)">1.556</td>
+      <td class="r" style="font-family:var(--font-m)">$52.742</td>
+      <td class="r" style="font-family:var(--font-m)">$35.000</td>
+      <td class="r" style="font-family:var(--font-m)">$70.000</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$46.750</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">70.7%</td>
+      <td class="r"><span class="uplift neg">−$5.992 / −11%</span></td>
+      <td><span class="posicion pos-sobre">🔴 Desert Eagle alto</span></td>
+    </tr>
+    <tr>
+      <td><strong>Burbujas</strong></td>
+      <td class="r">5</td>
+      <td class="r" style="font-family:var(--font-m)">3.451</td>
+      <td class="r" style="font-family:var(--font-m)">$16.631</td>
+      <td class="r" style="font-family:var(--font-m)">$13.341</td>
+      <td class="r" style="font-family:var(--font-m)">$32.890</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$15.513</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">65.2%</td>
+      <td class="r"><span class="uplift neg">−$1.118 / −7%</span></td>
+      <td><span class="posicion pos-sobre">⚠️ 8H sobre-precio</span></td>
+    </tr>
+    <tr>
+      <td><strong>Dardos EVA</strong></td>
+      <td class="r">4</td>
+      <td class="r" style="font-family:var(--font-m)">1.891</td>
+      <td class="r" style="font-family:var(--font-m)">$37.376</td>
+      <td class="r" style="font-family:var(--font-m)">$28.900</td>
+      <td class="r" style="font-family:var(--font-m)">$45.000</td>
+      <td class="r" style="font-family:var(--font-m);font-weight:700;color:var(--green)">$29.113</td>
+      <td class="r" style="font-family:var(--font-m);color:var(--green)">61.3%</td>
+      <td class="r"><span class="uplift neg">−$8.263 / −22%</span></td>
+      <td><span class="posicion pos-sobre">🔴 M1911 sobre-precio</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<!-- CONCLUSIONES -->
+<!-- ============================================================ -->
+<div class="stitle">💡 Conclusiones y Plan de Acción</div>
+<div class="conc-grid">
+  <div class="conc">
+    <h4>🚀 Prioridad 1 — Pelotas Deportivas (Acción inmediata)</h4>
+    <p>Las <strong>Pelotas Fútbol VOLT N5</strong> (22.130 unidades) están publicadas a $11.788 mientras el competidor más económico del segmento (Nassau) publica a <strong>$21.500</strong>. Subir al precio óptimo <strong>$17.850</strong> representa un ingreso adicional de +$6.062 por unidad vendida — un uplift total de <strong>+$134M ARS</strong> sobre el stock completo. Esta es la acción de mayor impacto económico del portafolio.</p>
+  </div>
+  <div class="conc warn">
+    <h4>⛔ Prioridad 2 — Drone OVNI Lista Precio (Urgente)</h4>
+    <p>El SKU <strong>03427 Drone OVNI Battle</strong> tiene un Precio de Lista de $11.888 que está <strong>por debajo del Piso Operativo de $12.059</strong>. Cualquier venta desde ML no cubre los gastos de canal. Se debe actualizar la lista PDF o renegociar el costo con el proveedor. El precio óptimo de publicación ML es <strong>$18.700</strong>, requiriendo un precio de lista mínimo de <strong>$15.573</strong>.</p>
+  </div>
+  <div class="conc blue">
+    <h4>📉 Prioridad 3 — Bajar sobre-precios (Conversión)</h4>
+    <p>Cuatro SKUs están publicados por encima del precio de mercado ML: <strong>Desert Eagle</strong> ($47.657 vs $42.000 mercado → bajar a $35.700), <strong>Revólveres 8H</strong> ($14.576 vs $14.500 → $12.325), <strong>M1911+Revolver</strong> ($22.090 vs $22.000 → $18.700) y <strong>Dardos Semi Auto</strong>. Corregir estos sobre-precios mejora la conversión y el ranking ML.</p>
+  </div>
+  <div class="conc">
+    <h4>✅ Prioridad 4 — Mantener y optimizar posicionados</h4>
+    <p>El <strong>UZI Gel Blaster</strong> ($57.827 vs mercado $68.000) está correctamente posicionado. Las <strong>Bazookas de Burbujas</strong> 45H y la mayoría de las <strong>Escopetas de Dardos</strong> también están bien. El <strong>FURY N5</strong> y <strong>Basquet DASH N7</strong> pueden subir marginalmente (+8-19%) para capturar el valor del segmento premium. Mantener actualización cada 30 días o ante variación TC &gt;5%.</p>
+  </div>
+</div>
+
+</div><!-- end wrap -->
+
+<footer>
+  <span>Microbell S.A. · Análisis Competitivo ML Juguetería · 18/03/2026 · TC Blue $1.475 ARS/USD</span>
+  <span>Precios "Estimado" = inferidos de rango de mercado · Confirmados = fuente indicada · Actualizar mensualmente</span>
+</footer>
+
+<script>
+// ── CHART HELPERS ──────────────────────────────────────────────
+const FONT = "'DM Mono', monospace";
+const fmt = v => '$' + v.toLocaleString('es-AR');
+
+Chart.defaults.font.family = FONT;
+Chart.defaults.font.size = 10;
+
+function hbar(id, labels, datasets, title) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 9 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw)
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' },
+          grid: { color: 'rgba(0,0,0,0.05)' }
+        },
+        y: { ticks: { font: { size: 9 } } }
+      }
+    }
+  });
+}
+
+// ── PELOTAS FÚTBOL N5 ──────────────────────────────────────────
+hbar('chartPelotaN5',
+  ['Microbell VOLT N5\n(actual)', 'Nassau N5 PVC', 'EZ Life PVC N°5', 'Kagiva N5 PVC', 'DRB Mundial 2026', 'ÓPTIMO VOLT N5', 'ÓPTIMO FURY N5'],
+  [
+    {
+      label: 'Precio ML',
+      data: [11788, 21500, 29000, 33745, 39356, 17850, 23800],
+      backgroundColor: ['rgba(138,104,0,0.7)', 'rgba(26,63,122,0.6)', 'rgba(26,63,122,0.6)', 'rgba(26,63,122,0.6)', 'rgba(26,63,122,0.6)', 'rgba(26,107,42,0.7)', 'rgba(26,107,42,0.7)'],
+      borderColor:     ['#8a6800', '#1a3f7a', '#1a3f7a', '#1a3f7a', '#1a3f7a', '#1a6b2a', '#1a6b2a'],
+      borderWidth: 1.5,
+    }
+  ]
+);
+
+// ── OTRAS PELOTAS ───────────────────────────────────────────────
+hbar('chartOtrasP',
+  ['Micro Basquet DASH\n(actual)', 'Básquet N7 Básico', 'EZ Life N7', 'Spalding TF-150', 'ÓPTIMO Basquet N7', 'Micro Voley AERO\n(actual)', 'EZ Life Voley N5', 'Kagiva Voley PVC', 'ÓPTIMO Voley N5'],
+  [
+    {
+      label: 'Precio ML',
+      data: [21213, 10799, 18000, 31852, 22950, 18850, 13000, 20000, 22100],
+      backgroundColor: ['rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)','rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)'],
+      borderColor: ['#8a6800','#1a3f7a','#1a3f7a','#1a3f7a','#1a6b2a','#8a6800','#1a3f7a','#1a3f7a','#1a6b2a'],
+      borderWidth: 1.5,
+    }
+  ]
+);
+
+// ── DRONES ──────────────────────────────────────────────────────
+hbar('chartDrones',
+  ['Micro Drone OVNI\n(actual)', 'Micro Drone LED 360°\n(actual)', 'Mini Drone LED Inf.', 'Drone OVNI Spinner', 'RC Toy Drone', 'ÓPTIMO Drone OVNI', 'ÓPTIMO Drone LED 360°'],
+  [
+    {
+      label: 'Precio ML',
+      data: [21398, 20524, 15000, 22000, 25000, 18700, 17000],
+      backgroundColor: ['rgba(138,104,0,0.7)','rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)','rgba(26,107,42,0.7)'],
+      borderColor: ['#8a6800','#8a6800','#1a3f7a','#1a3f7a','#1a3f7a','#1a6b2a','#1a6b2a'],
+      borderWidth: 1.5,
+    }
+  ]
+);
+
+// ── GEL BLASTERS ────────────────────────────────────────────────
+hbar('chartGel',
+  ['Micro Desert Eagle\n(actual)', 'Pistola Hidrogel Glock', 'Gel Blaster Desert E.', 'ÓPTIMO Desert Eagle', 'Micro UZI Elétrico\n(actual)', 'Rifle Gel Blaster UZI', 'Gel Blaster UZI Premium', 'ÓPTIMO UZI'],
+  [
+    {
+      label: 'Precio ML',
+      data: [47657, 35000, 42000, 35700, 57827, 65000, 70000, 57800],
+      backgroundColor: ['rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)','rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)'],
+      borderColor: ['#8a6800','#1a3f7a','#1a3f7a','#1a6b2a','#8a6800','#1a3f7a','#1a3f7a','#1a6b2a'],
+      borderWidth: 1.5,
+    }
+  ]
+);
+
+// ── BURBUJAS ────────────────────────────────────────────────────
+hbar('chartBurbujas',
+  ['Micro Revolver 8H\n(actual)', 'Burbujero Básico ML', 'Pistola Burbujas+Luces', 'Pistola Burbujas Grande', 'Bazooka 45H ML', 'ÓPTIMO Rev. 8H', 'Micro Bazooka 45H\n(actual)', 'ÓPTIMO Bazooka 45H'],
+  [
+    {
+      label: 'Precio ML',
+      data: [14576, 13341, 21599, 24999, 32890, 12325, 20842, 18700],
+      backgroundColor: ['rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)','rgba(138,104,0,0.7)','rgba(26,107,42,0.7)'],
+      borderColor: ['#8a6800','#1a3f7a','#1a3f7a','#1a3f7a','#1a3f7a','#1a6b2a','#8a6800','#1a6b2a'],
+      borderWidth: 1.5,
+    }
+  ]
+);
+
+// ── DARDOS EVA ──────────────────────────────────────────────────
+hbar('chartDardos',
+  ['Micro M1911+Rev.\n(actual)', 'Game Vault Set Armas', 'Ali Trade Escopeta', 'Semi Auto Dardos EVA', 'Escopeta c/Mira ML', 'ÓPTIMO M1911', 'Micro Escopeta c/Mira\n(actual)', 'ÓPTIMO Escopeta'],
+  [
+    {
+      label: 'Precio ML',
+      data: [22090, 28900, 30544, 36000, 45000, 18700, 40462, 38250],
+      backgroundColor: ['rgba(138,104,0,0.7)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,63,122,0.5)','rgba(26,107,42,0.7)','rgba(138,104,0,0.7)','rgba(26,107,42,0.7)'],
+      borderColor: ['#8a6800','#1a3f7a','#1a3f7a','#1a3f7a','#1a3f7a','#1a6b2a','#8a6800','#1a6b2a'],
+      borderWidth: 1.5,
+    }
+  ]
+);
+</script>
+</body>
+</html>

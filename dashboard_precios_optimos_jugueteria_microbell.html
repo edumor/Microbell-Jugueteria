@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparativo Precios Lista vs Mercado Libre — Juguetería — Microbell S.A.</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#fafaf8;--surface:#fff;--s2:#f4f2ee;--s3:#ece9e3;
+  --border:#e0dbd2;--border2:#ccc6bb;
+  --ink:#1a1814;--ink2:#3d382e;--muted:#8a8070;
+  --green:#1a6b2a;--green-bg:rgba(26,107,42,0.07);
+  --red:#b83200;--red-bg:rgba(184,50,0,0.07);
+  --blue:#1a3f7a;--blue-bg:rgba(26,63,122,0.07);
+  --gold:#8a6800;--gold-bg:rgba(138,104,0,0.08);
+  --warn:#c04800;--orange:#e05000;
+  --font-d:'Unbounded',sans-serif;
+  --font-b:'DM Sans',sans-serif;
+  --font-m:'DM Mono',monospace;
+  --r:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:13px;line-height:1.5;}
+
+header{
+  background:var(--ink);color:#fff;padding:16px 36px;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:200;
+  border-bottom:3px solid var(--orange);
+}
+.logo h1{font-family:var(--font-d);font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#fff;line-height:1.2;}
+.logo p{font-size:0.58rem;color:#aaa;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-m);margin-top:3px;}
+.hmeta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.chip{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:3px;padding:4px 10px;font-family:var(--font-m);font-size:0.58rem;color:#ccc;}
+.chip strong{color:#fff;}
+.chip.hot{background:rgba(184,50,0,0.3);border-color:rgba(184,50,0,0.5);color:#ff9970;}
+.chip.warn{background:rgba(200,120,0,0.3);border-color:rgba(200,120,0,0.5);color:#ffd080;}
+
+.mbar{
+  background:var(--gold-bg);border-bottom:2px solid var(--gold);
+  padding:9px 36px;display:flex;gap:0;align-items:stretch;flex-wrap:wrap;
+}
+.ms{display:flex;align-items:center;gap:8px;padding:0 18px 0 0;border-right:1px solid var(--border);margin-right:18px;}
+.ms:last-child{border-right:none;padding-right:0;margin-right:0;}
+.mn{width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--font-m);font-size:0.55rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ml{font-family:var(--font-m);font-size:0.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:1px;}
+.mf{font-family:var(--font-m);font-size:0.68rem;font-weight:600;color:var(--ink);}
+
+.wrap{max-width:1900px;margin:0 auto;padding:20px 36px 60px;}
+
+.kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;transition:box-shadow .2s;}
+.kpi:hover{box-shadow:0 2px 10px rgba(0,0,0,0.06);}
+.klbl{font-family:var(--font-m);font-size:0.54rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;}
+.kval{font-family:var(--font-d);font-size:1.5rem;font-weight:700;line-height:1;}
+.ksub{font-size:0.58rem;color:var(--muted);margin-top:3px;font-family:var(--font-m);}
+.kval.green{color:var(--green);}
+.kval.red{color:var(--red);}
+.kval.gold{color:var(--gold);}
+
+.crow{display:grid;grid-template-columns:2.3fr 1fr;gap:14px;margin-bottom:20px;}
+.cbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;}
+.cbox h3{font-family:var(--font-m);font-size:0.55rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:12px;}
+.cbox canvas{max-height:240px;}
+
+.alert{
+  background:rgba(184,50,0,0.06);border:1px solid rgba(184,50,0,0.2);
+  border-left:4px solid var(--warn);
+  border-radius:var(--r);padding:10px 16px;margin-bottom:16px;
+  font-size:0.7rem;color:var(--warn);font-family:var(--font-m);
+}
+.alert strong{font-weight:600;}
+.alert-warn{
+  background:rgba(200,120,0,0.06);border:1px solid rgba(200,120,0,0.2);
+  border-left:4px solid #c07800;
+  border-radius:var(--r);padding:10px 16px;margin-bottom:16px;
+  font-size:0.7rem;color:#8a5000;font-family:var(--font-m);
+}
+.alert-warn strong{font-weight:600;}
+
+.frow{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+.flbl{font-family:var(--font-m);font-size:0.57rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-right:2px;}
+.fb{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:4px 11px;border-radius:20px;font-size:0.62rem;font-family:var(--font-m);cursor:pointer;transition:all .14s;}
+.fb:hover,.fb.on{background:var(--ink);border-color:var(--ink);color:#fff;}
+.fsep{width:1px;height:16px;background:var(--border2);margin:0 6px;}
+
+.stitle{font-family:var(--font-d);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin:20px 0 12px;display:flex;align-items:center;gap:10px;}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.twrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:auto;}
+table{width:100%;border-collapse:collapse;font-size:0.72rem;min-width:1700px;}
+
+thead tr.gh th{
+  padding:5px 12px;font-family:var(--font-m);font-size:0.5rem;
+  text-transform:uppercase;letter-spacing:1.5px;text-align:center;
+  border-bottom:none;position:sticky;top:0;z-index:10;
+}
+thead tr.gh th.g-base{background:#f0ece6;}
+thead tr.gh th.g-piso{background:#e8f0e8;}
+thead tr.gh th.g-lista{background:#e8eef8;}
+thead tr.gh th.g-micro{background:#fff0e0;}
+thead tr.gh th.g-sim{background:#f0e8f8;}
+thead tr.gh th.g-comp{background:#e8f8ee;}
+thead tr.gh th.g-gap{background:#fef8ec;}
+
+thead tr.hh th{
+  padding:6px 12px;font-family:var(--font-m);font-size:0.6rem;
+  text-transform:uppercase;letter-spacing:1px;text-align:right;
+  background:var(--s2);border-bottom:2px solid var(--border2);
+  white-space:nowrap;position:sticky;top:28px;z-index:10;color:var(--ink2);
+}
+thead tr.hh th:first-child,thead tr.hh th:nth-child(2),thead tr.hh th:nth-child(3){text-align:left;}
+
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+tbody tr:hover{background:var(--s2);}
+tbody tr.alerta-row{background:#fff5f0;}
+tbody tr.sobre-precio{background:#fff8f0;}
+td{padding:7px 12px;text-align:right;vertical-align:middle;}
+td:first-child,td:nth-child(2),td:nth-child(3){text-align:left;}
+td.rn{color:var(--muted);font-family:var(--font-m);font-size:0.6rem;}
+td.sku{font-family:var(--font-m);font-weight:600;font-size:0.68rem;}
+td.prod{max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.7rem;}
+td.rub{font-size:0.62rem;color:var(--muted);}
+td.num{font-family:var(--font-m);font-size:0.68rem;}
+td.bold{font-weight:600;}
+
+.badge{display:inline-block;padding:2px 7px;border-radius:3px;font-family:var(--font-m);font-size:0.55rem;font-weight:600;}
+.badge-ok{background:var(--green-bg);color:var(--green);}
+.badge-warn{background:rgba(200,120,0,0.1);color:#8a5000;}
+.badge-red{background:var(--red-bg);color:var(--red);}
+.badge-blue{background:var(--blue-bg);color:var(--blue);}
+
+.pct-pos{color:var(--green);font-weight:600;}
+.pct-neg{color:var(--red);font-weight:600;}
+.pct-warn{color:#c07800;font-weight:600;}
+
+.opp-table{width:100%;border-collapse:collapse;font-size:0.72rem;}
+.opp-table th{padding:8px 12px;background:var(--s2);font-family:var(--font-m);font-size:0.58rem;text-transform:uppercase;letter-spacing:1px;text-align:right;border-bottom:2px solid var(--border2);}
+.opp-table th:first-child,.opp-table th:nth-child(2){text-align:left;}
+.opp-table td{padding:7px 12px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--font-m);}
+.opp-table td:first-child,.opp-table td:nth-child(2){text-align:left;}
+
+.rubro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.rub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}
+.rub-card h4{font-family:var(--font-m);font-size:0.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.rub-stat{display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.68rem;}
+.rub-stat .lbl{color:var(--muted);}
+.rub-stat .val{font-family:var(--font-m);font-weight:600;}
+
+.conc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.conc{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:var(--r);padding:12px 16px;}
+.conc.warn{border-left-color:#c07800;}
+.conc.red{border-left-color:var(--red);}
+.conc.blue{border-left-color:var(--blue);}
+.conc h4{font-family:var(--font-m);font-size:0.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--ink);margin-bottom:6px;}
+.conc p{font-size:0.7rem;color:var(--ink2);line-height:1.6;}
+
+footer{background:var(--ink);color:#666;padding:14px 36px;font-size:0.58rem;font-family:var(--font-m);display:flex;justify-content:space-between;align-items:center;}
+footer a{color:#888;text-decoration:none;}
+
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(4,1fr);}.rubro-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <h1>MICROBELL S.A.</h1>
+    <p>Estrategia de Precios Competitivos — Juguetería General</p>
+  </div>
+  <div class="hmeta">
+    <div class="chip">Fecha: <strong>18/03/2026</strong></div>
+    <div class="chip">TC Blue: <strong>$1.475 ARS/USD</strong></div>
+    <div class="chip">SKUs: <strong>30 Top Stock</strong></div>
+    <div class="chip warn">⚠️ 1 SKU Bajo Piso</div>
+    <div class="chip hot">🔴 6 SKU Sobre-precio ML</div>
+  </div>
+</header>
+
+<div class="mbar">
+  <div class="ms"><div class="mn">1</div><div><div class="ml">Piso Operativo</div><div class="mf">Costo CSV × 1.50</div></div></div>
+  <span class="marr">›</span>
+  <div class="ms"><div class="mn">2</div><div><div class="ml">Precio ML Microbell (actual)</div><div class="mf">Lista PDF × 1.80</div></div></div>
+  <span class="marr">›</span>
+  <div class="ms"><div class="mn">3</div><div><div class="ml">Precio ML Similar relevado</div><div class="mf">Mercado Libre 18/03/2026</div></div></div>
+  <span class="marr">›</span>
+  <div class="ms"><div class="mn">4</div><div><div class="ml">Precio Competitivo Óptimo</div><div class="mf">MAX(ML×0.85 ; Piso×1.20)</div></div></div>
+</div>
+
+<div class="wrap">
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi"><div class="klbl">SKU Analizados</div><div class="kval">30</div><div class="ksub">Top por Stock</div></div>
+  <div class="kpi"><div class="klbl">Unidades Stock</div><div class="kval">41.835</div><div class="ksub">Stock total top 30</div></div>
+  <div class="kpi"><div class="klbl">Margen Prom. Comp.</div><div class="kval green">74.5%</div><div class="ksub">s/Precio Comp. Rec.</div></div>
+  <div class="kpi"><div class="klbl">Gap ML vs Lista</div><div class="kval green">+55.3%</div><div class="ksub">ML promedio s/Lista PDF</div></div>
+  <div class="kpi"><div class="klbl">SKU Bajo Piso (!)</div><div class="kval red">1</div><div class="ksub">03427 — NO publicar</div></div>
+  <div class="kpi"><div class="klbl">SKU Sobre-precio ML</div><div class="kval red">6</div><div class="ksub">Lista×1.80 > ML Similar</div></div>
+  <div class="kpi"><div class="klbl">SKU Oport. Gap >50%</div><div class="kval gold">18</div><div class="ksub">ML paga 50%+ sobre Lista</div></div>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert">
+  <strong>⛔ ALERTA CRÍTICA — 1 SKU con Lista BAJO el Piso Operativo:</strong> 03427 Drone OVNI Battle (Lista $11.888 &lt; Piso $12.058). NO publicar en ML con precio lista actual — genera pérdida operativa. Precio mínimo de publicación: $14.470.
+</div>
+<div class="alert-warn">
+  <strong>⚠️ ALERTA PRECIOS ML — 6 SKU con ML Microbell SUPERIOR al precio de mercado:</strong> 03426 (Drone Giratorio), 03552, 03553, 03398 (Revolvers Burbuja), 03561 (Desert Eagle), 03394 (Pistola Dardos M1911). Microbell está publicando POR ENCIMA del precio de mercado en ML — revisar urgente para no perder ventas.
+</div>
+<div class="alert-warn">
+  <strong>💡 OPORTUNIDAD CRÍTICA — Pelotas Deportivas MASIVAMENTE subpreciadas en ML:</strong> Las Pelotas N5 VOLT (6.153+5.864+5.000 uds) están publicadas en ML a $11.788, mientras el mercado ML cotiza similares a $21.000 (+44% por encima). Se puede subir el precio y AUMENTAR la ganancia. 17.017 unidades potencialmente mal preciadas.
+</div>
+
+<!-- GRÁFICOS -->
+<div class="crow">
+  <div class="cbox">
+    <h3>Comparativo: Lista PDF vs ML Microbell (actual) vs ML Similar vs Precio Competitivo Rec.</h3>
+    <canvas id="chartComparativo"></canvas>
+  </div>
+  <div class="cbox">
+    <h3>Gap ML vs Lista PDF por Rubro</h3>
+    <canvas id="chartRubros"></canvas>
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="frow">
+  <span class="flbl">Filtrar:</span>
+  <button class="fb on" onclick="filtrar('todos')">Todos (30)</button>
+  <div class="fsep"></div>
+  <button class="fb" onclick="filtrar('alerta')">⛔ Bajo Piso (1)</button>
+  <button class="fb" onclick="filtrar('sobreprecio')">🔴 Sobre-precio ML (6)</button>
+  <button class="fb" onclick="filtrar('oportunidad')">💚 Oport. Gap >50% (18)</button>
+  <div class="fsep"></div>
+  <button class="fb" onclick="filtrar('PELOTAS FÚTBOL')">Pelotas Fútbol</button>
+  <button class="fb" onclick="filtrar('BURBUJAS')">Burbujas</button>
+  <button class="fb" onclick="filtrar('GEL BLASTERS')">Gel Blasters</button>
+  <button class="fb" onclick="filtrar('DARDOS EVA')">Dardos EVA</button>
+  <button class="fb" onclick="filtrar('DRONES')">Drones</button>
+</div>
+
+<!-- TABLA PRINCIPAL -->
+<div class="twrap">
+<table id="mainTable">
+<thead>
+  <tr class="gh">
+    <th colspan="4" class="g-base">IDENTIFICACIÓN</th>
+    <th colspan="2" class="g-piso">PISO OPERATIVO</th>
+    <th colspan="2" class="g-lista">PRECIO LISTA (PDF)</th>
+    <th colspan="2" class="g-micro">ML MICROBELL ACTUAL</th>
+    <th colspan="2" class="g-sim">ML SIMILAR (MERCADO)</th>
+    <th colspan="3" class="g-comp">PRECIO COMPETITIVO REC.</th>
+    <th colspan="2" class="g-gap">ANÁLISIS</th>
+  </tr>
+  <tr class="hh">
+    <th style="text-align:left">#</th>
+    <th style="text-align:left">SKU</th>
+    <th style="text-align:left">Producto</th>
+    <th style="text-align:left">Rubro</th>
+    <th>Costo ARS</th>
+    <th>Piso (+50%)</th>
+    <th>Lista s/IVA</th>
+    <th>Margen s/Piso</th>
+    <th>ML Micro ($)</th>
+    <th>vs Sim.</th>
+    <th>ML Similar</th>
+    <th>Gap vs Lista</th>
+    <th>Comp. Rec.</th>
+    <th>Margen Comp.</th>
+    <th>Ahorro vs ML</th>
+    <th>Stock</th>
+    <th>Estado</th>
+  </tr>
+</thead>
+<tbody id="tableBody">
+</tbody>
+</table>
+</div>
+
+<!-- OPORTUNIDADES TOP -->
+<div class="stitle">Top Oportunidades de Publicación en ML</div>
+<div class="twrap">
+<table class="opp-table">
+<thead>
+  <tr>
+    <th>Rk</th><th>SKU / Producto</th><th>Lista Actual</th><th>ML Microbell</th><th>ML Similar</th><th>PRECIO COMP. REC.</th><th>Margen Comp.</th><th>Gap ML/Lista</th><th>Acción Sugerida</th>
+  </tr>
+</thead>
+<tbody id="oppBody"></tbody>
+</table>
+</div>
+
+<!-- ANÁLISIS POR RUBRO -->
+<div class="stitle">Análisis por Rubro</div>
+<div class="rubro-grid" id="rubroGrid"></div>
+
+<!-- CONCLUSIONES -->
+<div class="stitle">Conclusiones y Recomendaciones</div>
+<div class="conc-grid">
+  <div class="conc">
+    <h4>💡 Oportunidad Masiva: Subir Precios en ML (Pelotas Deportivas)</h4>
+    <p>Las Pelotas Deportivas (N5 VOLT, N5 FURY, N3 NEO, Basquet N7, Volley N5) representan 17+ SKU con stock superior a 17.000 unidades. Están publicadas en ML a Lista×1.80 (~$11.800-$20.000) mientras el mercado paga $21.000-$28.000. Se recomienda publicar al Precio Competitivo Recomendado (~$17.850-$23.800) — hasta un 51% más que el precio ML actual de Microbell, con margen del 79-85% sobre el precio de venta.</p>
+  </div>
+  <div class="conc warn">
+    <h4>⚠️ Urgente: Corregir 6 SKU con Sobre-precio en ML</h4>
+    <p>Los Revolvers de Burbuja (03398, 03552, 03553), el Drone Giratorio LED (03426), el Desert Eagle Gel Blaster (03561) y la Pistola M1911 (03394) están publicados en ML a precios SUPERIORES al mercado. Esto reduce la competitividad y puede estar causando pérdida de ventas activas. Bajar al Precio Competitivo Recomendado inmediatamente.</p>
+  </div>
+  <div class="conc red">
+    <h4>⛔ URGENTE: 03427 Drone OVNI Battle — NO Publicar</h4>
+    <p>El Drone OVNI Battle tiene Lista ($11.888) por debajo del Piso Operativo ($12.058). Publicar a Lista×1.80 generaría pérdida en el canal. Precio mínimo de publicación: $14.470 (Piso×1.20). Precio competitivo recomendado: $18.700. Revisar precio de lista antes de cualquier acción comercial en ML.</p>
+  </div>
+  <div class="conc blue">
+    <h4>📌 Fórmula de Publicación Recomendada</h4>
+    <p><strong>Precio Comp. = MAX(ML_Similar × 0.85 ; Piso × 1.20)</strong><br>Donde Piso = Costo CSV × 1.50. Esto garantiza: (a) precio 15% por debajo del competidor más cercano en ML, (b) margen mínimo del 20% sobre todos los costos operativos, (c) posicionamiento como "mejor precio" en ML. Actualizar análisis cada 30 días o ante variación del TC mayor al 5%.</p>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <span>Microbell S.A. — Gerencia IT / Análisis Comercial — Eduardo Jose Moreno — Buenos Aires, 18 de marzo de 2026 — Confidencial uso interno.</span>
+  <span>Precios ML relevados 18/03/2026. TC Blue $1.475 ARS/USD. Piso = Costo CSV × 1.50. Precio Comp. = MAX(ML×0.85 ; Piso×1.20)</span>
+</footer>
+
+<script>
+const data = [
+  {rank:1,sku:'03358',prod:'Pelota Futbol N5 VOLT Verde/Negro PVC',rubro:'PELOTAS FÚTBOL',costo:2773,piso:4160,lista:6549,ml_micro:11788,ml_sim:21000,comp:17850,margen:84.5,gap:68.8,gap_micro:43.9,stock:6153,alerta:false,sobre:false},
+  {rank:2,sku:'03359',prod:'Pelota Futbol N5 VOLT Rojo/Negro PVC',rubro:'PELOTAS FÚTBOL',costo:2773,piso:4160,lista:6549,ml_micro:11788,ml_sim:21000,comp:17850,margen:84.5,gap:68.8,gap_micro:43.9,stock:5864,alerta:false,sobre:false},
+  {rank:3,sku:'03357',prod:'Pelota Futbol N5 VOLT Celeste/Azul PVC',rubro:'PELOTAS FÚTBOL',costo:2773,piso:4160,lista:6549,ml_micro:11788,ml_sim:21000,comp:17850,margen:84.5,gap:68.8,gap_micro:43.9,stock:5000,alerta:false,sobre:false},
+  {rank:4,sku:'03362',prod:'Pelota Futbol N5 FURY Naranja/Blanco PVC',rubro:'PELOTAS FÚTBOL',costo:4661,piso:6992,lista:11136,ml_micro:20045,ml_sim:28000,comp:23800,margen:80.4,gap:60.2,gap_micro:28.4,stock:1822,alerta:false,sobre:false},
+  {rank:5,sku:'03361',prod:'Pelota Futbol N5 FURY Verde/Azul PVC',rubro:'PELOTAS FÚTBOL',costo:4661,piso:6992,lista:11136,ml_micro:20045,ml_sim:28000,comp:23800,margen:80.4,gap:60.2,gap_micro:28.4,stock:1819,alerta:false,sobre:false},
+  {rank:6,sku:'03370',prod:'Pelota Basquet N7 DASH Naranja Goma',rubro:'PELOTA BASQUET',costo:4336,piso:6504,lista:11785,ml_micro:21213,ml_sim:27000,comp:22950,margen:81.1,gap:56.4,gap_micro:21.4,stock:1712,alerta:false,sobre:false},
+  {rank:7,sku:'03363',prod:'Pelota Volley N5 AERO Celeste PVC',rubro:'PELOTA VOLLEY',costo:4602,piso:6903,lista:10472,ml_micro:18850,ml_sim:26000,comp:22100,margen:79.2,gap:59.7,gap_micro:27.5,stock:1512,alerta:false,sobre:false},
+  {rank:8,sku:'03360',prod:'Pelota Futbol N5 FURY Celeste/Azul PVC',rubro:'PELOTAS FÚTBOL',costo:4661,piso:6992,lista:11136,ml_micro:20045,ml_sim:28000,comp:23800,margen:80.4,gap:60.2,gap_micro:28.4,stock:1472,alerta:false,sobre:false},
+  {rank:9,sku:'03371',prod:'Inflador de Pelota 8 Pulgadas Negro',rubro:'INFLADORES',costo:1047,piso:1570,lista:2286,ml_micro:4115,ml_sim:5000,comp:4250,margen:75.4,gap:54.3,gap_micro:17.7,stock:1465,alerta:false,sobre:false},
+  {rank:10,sku:'03426',prod:'Drone Giratorio LED 360°',rubro:'DRONES',costo:5856,piso:8784,lista:11402,ml_micro:20524,ml_sim:20000,comp:17000,margen:65.6,gap:43.0,gap_micro:-2.6,stock:1235,alerta:false,sobre:true},
+  {rank:11,sku:'03432',prod:'Tira Sobres Municion Hidrogel',rubro:'MUNICIONES',costo:59,piso:89,lista:693,ml_micro:1247,ml_sim:1800,comp:1530,margen:96.1,gap:61.5,gap_micro:30.7,stock:1199,alerta:false,sobre:false},
+  {rank:12,sku:'03552',prod:'Revolver Capibara 8 Huecos Burbuja',rubro:'BURBUJAS',costo:5236,piso:7854,lista:8098,ml_micro:14576,ml_sim:14500,comp:12325,margen:57.5,gap:44.2,gap_micro:-0.5,stock:887,alerta:false,sobre:true},
+  {rank:13,sku:'03553',prod:'Revolver Delfin 8 Huecos Burbuja',rubro:'BURBUJAS',costo:5236,piso:7854,lista:8098,ml_micro:14576,ml_sim:14500,comp:12325,margen:57.5,gap:44.2,gap_micro:-0.5,stock:864,alerta:false,sobre:true},
+  {rank:14,sku:'03561',prod:'Gel Blaster Desert Eagle Electrico',rubro:'GEL BLASTERS',costo:12360,piso:18540,lista:26476,ml_micro:47657,ml_sim:42000,comp:35700,margen:65.4,gap:37.0,gap_micro:-13.5,stock:859,alerta:false,sobre:true},
+  {rank:15,sku:'03427',prod:'Drone OVNI Battle Flying Spinner',rubro:'DRONES',costo:8039,piso:12059,lista:11888,ml_micro:21398,ml_sim:22000,comp:18700,margen:57.0,gap:46.0,gap_micro:2.7,stock:845,alerta:true,sobre:false},
+  {rank:16,sku:'03365',prod:'Set Paleta Madera Playero Tropical A',rubro:'PALETAS PLAYERAS',costo:2478,piso:3717,lista:5236,ml_micro:9425,ml_sim:14000,comp:11900,margen:79.2,gap:62.6,gap_micro:32.7,stock:825,alerta:false,sobre:false},
+  {rank:17,sku:'03366',prod:'Set Paleta Madera Playero Tropical B',rubro:'PALETAS PLAYERAS',costo:2478,piso:3717,lista:5236,ml_micro:9425,ml_sim:14000,comp:11900,margen:79.2,gap:62.6,gap_micro:32.7,stock:808,alerta:false,sobre:false},
+  {rank:18,sku:'03398',prod:'Revolver 8 Huecos Dispara Burbujas',rubro:'BURBUJAS',costo:5236,piso:7854,lista:8098,ml_micro:14576,ml_sim:14500,comp:12325,margen:57.5,gap:44.2,gap_micro:-0.5,stock:785,alerta:false,sobre:true},
+  {rank:19,sku:'03369',prod:'Pelota Futbol N3 NEO Rosa/Blanco PVC',rubro:'PELOTAS FÚTBOL',costo:2316,piso:3474,lista:4572,ml_micro:8230,ml_sim:14500,comp:12325,margen:81.2,gap:68.5,gap_micro:43.2,stock:724,alerta:false,sobre:false},
+  {rank:20,sku:'03403',prod:'Gel Blaster UZI Electrico Automatico',rubro:'GEL BLASTERS',costo:15001,piso:22502,lista:32126,ml_micro:57827,ml_sim:68000,comp:57800,margen:74.0,gap:52.8,gap_micro:15.0,stock:697,alerta:false,sobre:false},
+  {rank:21,sku:'03367',prod:'Pelota Futbol N3 NEO Verde PVC',rubro:'PELOTAS FÚTBOL',costo:2316,piso:3474,lista:4572,ml_micro:8230,ml_sim:14500,comp:12325,margen:81.2,gap:68.5,gap_micro:43.2,stock:674,alerta:false,sobre:false},
+  {rank:22,sku:'03372',prod:'Inflador de Pelota 8 Pulgadas Azul',rubro:'INFLADORES',costo:1047,piso:1570,lista:2286,ml_micro:4115,ml_sim:5000,comp:4250,margen:75.4,gap:54.3,gap_micro:17.7,stock:641,alerta:false,sobre:false},
+  {rank:23,sku:'03364',prod:'Pelota Futbol Niños Multicolor LED 6"',rubro:'PELOTAS FÚTBOL',costo:1106,piso:1659,lista:3275,ml_micro:5895,ml_sim:8500,comp:7225,margen:84.7,gap:61.5,gap_micro:30.6,stock:586,alerta:false,sobre:false},
+  {rank:24,sku:'03368',prod:'Pelota Futbol N3 NEO Celeste/Blanco PVC',rubro:'PELOTAS FÚTBOL',costo:2316,piso:3474,lista:4572,ml_micro:8230,ml_sim:14500,comp:12325,margen:81.2,gap:68.5,gap_micro:43.2,stock:547,alerta:false,sobre:false},
+  {rank:25,sku:'03396',prod:'Escopeta Recortada Dardos EVA c/Mira',rubro:'DARDOS EVA',costo:11652,piso:17478,lista:22479,ml_micro:40462,ml_sim:45000,comp:38250,margen:69.5,gap:50.0,gap_micro:10.1,stock:540,alerta:false,sobre:false},
+  {rank:26,sku:'03402',prod:'Bazooka Burbujas 45 Huecos Naranja',rubro:'BURBUJAS',costo:5472,piso:8208,lista:11579,ml_micro:20842,ml_sim:22000,comp:18700,margen:70.7,gap:47.4,gap_micro:5.3,stock:481,alerta:false,sobre:false},
+  {rank:27,sku:'03394',prod:'Pistolas Dardos EVA M1911 & Revolver',rubro:'DARDOS EVA',costo:6136,piso:9204,lista:12272,ml_micro:22090,ml_sim:22000,comp:18700,margen:67.2,gap:44.2,gap_micro:-0.4,stock:474,alerta:false,sobre:true},
+  {rank:28,sku:'03395',prod:'Pistola Dardos EVA Semi Automatica M3',rubro:'DARDOS EVA',costo:9470,piso:14205,lista:18231,ml_micro:32816,ml_sim:35000,comp:29750,margen:68.2,gap:47.9,gap_micro:6.2,stock:473,alerta:false,sobre:false},
+  {rank:29,sku:'03401',prod:'Bazooka Burbujas 45 Huecos Azul',rubro:'BURBUJAS',costo:5472,piso:8208,lista:11579,ml_micro:20842,ml_sim:22000,comp:18700,margen:70.7,gap:47.4,gap_micro:5.3,stock:468,alerta:false,sobre:false},
+  {rank:30,sku:'03397',prod:'Escopeta Dardos EVA Semi Automatica',rubro:'DARDOS EVA',costo:16181,piso:24272,lista:30075,ml_micro:54135,ml_sim:55000,comp:46750,margen:65.4,gap:45.3,gap_micro:1.6,stock:404,alerta:false,sobre:false},
+];
+
+const fmt = n => '$'+n.toLocaleString('es-AR');
+const pct = (n,cls) => `<span class="${cls}">${n>0?'+':''}${n}%</span>`;
+
+function buildTable(filter='todos'){
+  const tb = document.getElementById('tableBody');
+  let rows = data;
+  if(filter==='alerta') rows=data.filter(d=>d.alerta);
+  else if(filter==='sobreprecio') rows=data.filter(d=>d.sobre);
+  else if(filter==='oportunidad') rows=data.filter(d=>d.gap>50);
+  else if(filter!=='todos') rows=data.filter(d=>d.rubro===filter);
+
+  tb.innerHTML = rows.map(d=>{
+    const alertaCls = d.alerta?'alerta-row':d.sobre?'sobre-precio':'';
+    const margenListaPct = Math.round((d.lista-d.piso)/d.lista*100);
+    const margenListaCls = margenListaPct<5?'badge-red':margenListaPct<15?'badge-warn':'badge-ok';
+    const gapCls = d.gap>60?'pct-pos':d.gap>40?'pct-warn':'';
+    const gapMicroCls = d.gap_micro<0?'pct-neg':d.gap_micro>20?'pct-pos':'pct-warn';
+    let estado='';
+    if(d.alerta) estado='<span class="badge badge-red">⛔ BAJO PISO</span>';
+    else if(d.sobre) estado='<span class="badge badge-red">🔴 SOBRE-PRECIO</span>';
+    else if(d.gap>60) estado='<span class="badge badge-ok">💚 OPORT. ALTA</span>';
+    else if(d.gap>45) estado='<span class="badge badge-blue">↑ OPORT. MED.</span>';
+    else estado='<span class="badge" style="background:#f0f0f0;color:#666">OK</span>';
+
+    return `<tr class="${alertaCls}">
+      <td class="rn num">${d.rank}</td>
+      <td class="sku">${d.sku}</td>
+      <td class="prod" title="${d.prod}">${d.prod}</td>
+      <td class="rub">${d.rubro}</td>
+      <td class="num">${fmt(d.costo)}</td>
+      <td class="num bold">${fmt(d.piso)}</td>
+      <td class="num">${fmt(d.lista)}</td>
+      <td class="num"><span class="badge ${margenListaCls}">${margenListaPct>0?'+':''}${margenListaPct}%</span></td>
+      <td class="num bold">${fmt(d.ml_micro)}</td>
+      <td class="num">${pct(d.gap_micro, gapMicroCls)}</td>
+      <td class="num bold" style="color:#7b3fa0">${fmt(d.ml_sim)}</td>
+      <td class="num">${pct(d.gap, gapCls)}</td>
+      <td class="num bold" style="color:var(--green)">${fmt(d.comp)}</td>
+      <td class="num"><span class="badge badge-ok">${d.margen}%</span></td>
+      <td class="num">${fmt(d.ml_sim - d.comp)}</td>
+      <td class="num bold">${d.stock.toLocaleString('es-AR')}</td>
+      <td>${estado}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildOpp(){
+  const sorted = [...data].sort((a,b)=>b.gap-a.gap).slice(0,12);
+  const ob = document.getElementById('oppBody');
+  ob.innerHTML = sorted.map((d,i)=>{
+    let accion='';
+    if(d.alerta) accion='<span style="color:var(--red);font-weight:600">⛔ NO publicar — corregir precio lista primero</span>';
+    else if(d.sobre) accion='<span style="color:#c07800;font-weight:600">⚠️ Bajar precio ML — actualmente sobre el mercado</span>';
+    else if(d.gap>60) accion='<span style="color:var(--green);font-weight:600">✅ Publicar al precio comp. — ganancia masiva disponible</span>';
+    else accion='<span style="color:var(--blue)">↑ Ajustar precio al comp. recomendado</span>';
+    const gapCls=d.gap>60?'pct-pos':d.gap>40?'pct-warn':'';
+    return `<tr>
+      <td style="font-family:var(--font-m);color:var(--muted)">${i+1}</td>
+      <td><strong>${d.sku}</strong> — ${d.prod}</td>
+      <td>${fmt(d.lista)}</td>
+      <td>${fmt(d.ml_micro)}</td>
+      <td style="color:#7b3fa0;font-weight:600">${fmt(d.ml_sim)}</td>
+      <td style="color:var(--green);font-weight:700">${fmt(d.comp)}</td>
+      <td><span class="badge badge-ok">${d.margen}%</span></td>
+      <td>${pct(d.gap,gapCls)}</td>
+      <td>${accion}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildRubros(){
+  const rubros = {};
+  data.forEach(d=>{
+    if(!rubros[d.rubro]) rubros[d.rubro]={skus:[],stock:0,gaps:[],margenes:[],alertas:0,sobre:0};
+    rubros[d.rubro].skus.push(d.sku);
+    rubros[d.rubro].stock+=d.stock;
+    rubros[d.rubro].gaps.push(d.gap);
+    rubros[d.rubro].margenes.push(d.margen);
+    if(d.alerta) rubros[d.rubro].alertas++;
+    if(d.sobre) rubros[d.rubro].sobre++;
+  });
+  const rg = document.getElementById('rubroGrid');
+  rg.innerHTML = Object.entries(rubros).map(([rub,v])=>{
+    const avgGap = (v.gaps.reduce((a,b)=>a+b,0)/v.gaps.length).toFixed(1);
+    const avgMarg = (v.margenes.reduce((a,b)=>a+b,0)/v.margenes.length).toFixed(1);
+    let alertBadge='';
+    if(v.alertas>0) alertBadge=`<span class="badge badge-red">⛔ ${v.alertas} bajo piso</span> `;
+    if(v.sobre>0) alertBadge+=`<span class="badge badge-red">🔴 ${v.sobre} sobre-precio ML</span>`;
+    return `<div class="rub-card">
+      <h4>${rub} (${v.skus.length} SKUs)</h4>
+      <div class="rub-stat"><span class="lbl">Stock total</span><span class="val">${v.stock.toLocaleString('es-AR')} uds</span></div>
+      <div class="rub-stat"><span class="lbl">Gap promedio ML vs Lista</span><span class="val pct-pos">+${avgGap}%</span></div>
+      <div class="rub-stat"><span class="lbl">Margen prom. comp. rec.</span><span class="val">${avgMarg}%</span></div>
+      <div style="margin-top:8px">${alertBadge||'<span class="badge badge-ok">✅ Sin alertas</span>'}</div>
+    </div>`;
+  }).join('');
+}
+
+function filtrar(f){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  buildTable(f);
+}
+
+function buildCharts(){
+  const labels = data.map(d=>d.sku);
+  const ctx1 = document.getElementById('chartComparativo').getContext('2d');
+  new Chart(ctx1,{
+    type:'bar',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Lista s/IVA',data:data.map(d=>d.lista),backgroundColor:'rgba(26,63,122,0.7)',stack:'g1'},
+        {label:'ML Microbell (actual)',data:data.map(d=>d.ml_micro),backgroundColor:'rgba(220,120,0,0.7)',stack:'g2'},
+        {label:'ML Similar',data:data.map(d=>d.ml_sim),backgroundColor:'rgba(123,63,160,0.7)',stack:'g3'},
+        {label:'Comp. Recomendado',data:data.map(d=>d.comp),backgroundColor:'rgba(26,107,42,0.7)',stack:'g4'},
+      ]
+    },
+    options:{responsive:true,plugins:{legend:{labels:{font:{size:10}}}},scales:{x:{ticks:{font:{size:8}}},y:{ticks:{callback:v=>'$'+v.toLocaleString('es-AR')}}}}
+  });
+
+  const rubros={};
+  data.forEach(d=>{
+    if(!rubros[d.rubro]){rubros[d.rubro]={gaps:[]};}
+    rubros[d.rubro].gaps.push(d.gap);
+  });
+  const rlabels=Object.keys(rubros);
+  const rvals=rlabels.map(r=>(rubros[r].gaps.reduce((a,b)=>a+b,0)/rubros[r].gaps.length).toFixed(1));
+  const ctx2=document.getElementById('chartRubros').getContext('2d');
+  new Chart(ctx2,{
+    type:'bar',
+    data:{
+      labels:rlabels,
+      datasets:[{
+        label:'Gap ML vs Lista %',
+        data:rvals,
+        backgroundColor:rvals.map(v=>v>60?'rgba(26,107,42,0.75)':v>45?'rgba(138,104,0,0.75)':'rgba(26,63,122,0.75)')
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{x:{ticks:{callback:v=>v+'%'},max:80},y:{ticks:{font:{size:9}}}}
+    }
+  });
+}
+
+buildTable();
+buildOpp();
+buildRubros();
+buildCharts();
+</script>
+</body>
+</html>
