@@ -17,68 +17,66 @@
         }
         .container { 
             background: white; 
-            padding: 2.5rem; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            padding: 2rem; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
             text-align: center; 
-            max-width: 550px; 
+            max-width: 500px; 
             width: 100%; 
         }
-        h1 { color: #2c3e50; margin-bottom: 5px; border-bottom: 3px solid #3498db; display: inline-block; padding-bottom: 5px; }
-        .subtitle { color: #95a5a6; margin-bottom: 2rem; font-weight: 300; }
+        h1 { color: #2c3e50; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        p { color: #7f8c8d; margin-bottom: 1.5rem; }
         
         .menu-link { 
             display: block; 
             background: #3498db; 
             color: white; 
             text-decoration: none; 
-            padding: 15px; 
-            margin: 12px 0; 
-            border-radius: 8px; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 6px; 
             transition: all 0.3s ease; 
-            font-weight: bold;
-            font-size: 1.05rem;
+            font-weight: bold; 
         }
         
-        /* Estilo destacado para el nuevo Dashboard de ML */
-        .ml-highlight {
-            background: #2c3e50;
-            border-left: 5px solid #e67e22; /* Un toque de color para resaltar */
-        }
-
         .menu-link:hover { 
             background: #2980b9; 
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
 
-        .ml-highlight:hover {
+        /* Color diferenciado para resaltar el análisis de competencia */
+        .competencia-link {
+            background: #2c3e50;
+        }
+        .competencia-link:hover {
             background: #1a252f;
         }
 
-        footer { margin-top: 30px; font-size: 0.85rem; color: #bdc3c7; }
+        footer { margin-top: 20px; font-size: 0.8rem; color: #bdc3c7; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Microbell Juguetería</h1>
-        <p class="subtitle">Sistemas de Análisis y Reportes 2026</p>
+        <p>Seleccione el reporte analítico:</p>
         
-        <a class="menu-link ml-highlight" href="analisis_competitivo_ml_jugueteria_microbell.html">
-            📊 Análisis Competitivo (Machine Learning)
+        <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">
+            🤖 Predicción Competitiva (ML)
         </a>
 
         <a class="menu-link" href="dashboard_precios_optimos_jugueteria_microbell.html">
-            💰 Dashboard de Precios Óptimos
-        </a>
-        
-        <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">
-            📈 Dashboard de Rentabilidad
+            💰 Optimización de Precios
         </a>
 
-        <footer>
-            Desarrollado por Eduardo Moreno - Buenos Aires
-        </footer>
+        <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">
+            📈 Análisis de Rentabilidad
+        </a>
+
+        <a class="menu-link competencia-link" href="analisis_competitivo_ml_jugueteria_microbell.html">
+            🔍 Relevamiento: Fuentes y Competidores
+        </a>
+        
+        <footer>Dashboard Administrativo - Buenos Aires, 2026</footer>
     </div>
 </body>
 </html>
