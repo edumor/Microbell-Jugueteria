@@ -4,31 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - Microbell Juguetería</title>
+
+    <!-- =====================================================
+         META TAGS PARA LINKEDIN / WHATSAPP / TWITTER
+         ===================================================== -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="Microbell Juguetería BI" />
+    <meta property="og:title"       content="Sistema BI · Optimización de Precios · Microbell Juguetería" />
+    <meta property="og:description" content="3 dashboards interactivos con análisis competitivo mediante ML, optimización de precios y rentabilidad. +$113M ARS de oportunidad identificada sobre 30 SKUs · Buenos Aires 2026 · Lic. Eduardo Moreno" />
+    <meta property="og:url"         content="https://edumor.github.io/Microbell-Jugueteria/" />
+    <meta property="og:image"       content="https://edumor.github.io/Microbell-Jugueteria/preview.png" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale"      content="es_AR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Sistema BI · Optimización de Precios · Microbell Juguetería" />
+    <meta name="twitter:description" content="3 dashboards interactivos con ML, optimización de precios y rentabilidad. +$113M ARS de oportunidad identificada sobre 30 SKUs." />
+    <meta name="twitter:image"       content="https://edumor.github.io/Microbell-Jugueteria/preview.png" />
+
+    <!-- SEO general -->
+    <meta name="description" content="Sistema de Business Intelligence para Microbell Juguetería: análisis competitivo con ML, optimización de precios y dashboard de rentabilidad. Lic. Eduardo Moreno." />
+    <meta name="author"      content="Lic. Eduardo Moreno" />
+    <meta name="keywords"    content="business intelligence, optimización precios, juguetería, mercado libre, machine learning, dashboard, Argentina" />
+
     <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: #f4f7f6; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px; 
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
             box-sizing: border-box;
         }
-        .container { 
-            background: white; 
-            padding: 2.5rem; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-            text-align: center; 
-            max-width: 500px; 
-            width: 100%; 
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
         }
-        h1 { 
-            color: #2c3e50; 
-            border-bottom: 2px solid #3498db; 
-            padding-bottom: 10px; 
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
             margin-bottom: 10px;
         }
         .subtitle {
@@ -36,28 +61,43 @@
             margin-bottom: 1.5rem;
             font-size: 1.1rem;
         }
-        .menu-link { 
-            display: block; 
-            /* Se unificó el color de fondo y letra */
-            background: #3498db; 
-            color: white !important; /* !important asegura que no cambie el color del texto */
-            text-decoration: none; 
-            padding: 14px; 
-            margin: 10px 0; 
-            border-radius: 6px; 
-            transition: 0.3s ease; 
-            font-weight: bold; 
+        .menu-link {
+            display: block;
+            background: #3498db;
+            color: white !important;
+            text-decoration: none;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 6px;
+            transition: 0.3s ease;
+            font-weight: bold;
             font-size: 1rem;
         }
-        .menu-link:hover { 
-            background: #2980b9; 
+        .menu-link:hover {
+            background: #2980b9;
             transform: scale(1.02);
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
-        footer { 
-            margin-top: 25px; 
-            font-size: 0.9rem; 
-            color: #bdc3c7; 
+        .pdf-link {
+            display: block;
+            background: #ecf0f1;
+            color: #2c3e50 !important;
+            text-decoration: none;
+            padding: 12px;
+            margin: 16px 0 0 0;
+            border-radius: 6px;
+            transition: 0.3s ease;
+            font-size: 0.9rem;
+            border: 1px solid #dce3e8;
+        }
+        .pdf-link:hover {
+            background: #dce3e8;
+            transform: scale(1.01);
+        }
+        footer {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #bdc3c7;
             border-top: 1px solid #eee;
             padding-top: 15px;
         }
@@ -71,12 +111,16 @@
     <div class="container">
         <h1>Microbell Juguetería</h1>
         <p class="subtitle">Seleccione el reporte analítico:</p>
-        
+
         <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">🤖 Predicción Competitiva (ML)</a>
         <a class="menu-link" href="dashboard_precios_optimos_jugueteria_microbell.html">💰 Optimización de Precios</a>
         <a class="menu-link" href="dashboard_rentabilidad_jugueteria_microbell.html">📈 Análisis de Rentabilidad</a>
         <a class="menu-link" href="analisis_competitivo_ml_jugueteria_microbell.html">🔍 Relevamiento: Fuentes y Competidores</a>
-        
+
+        <a class="pdf-link" href="Resumen%20Operativo%20Dahsboard%20Jugueteria.pdf" target="_blank">
+            📄 Descargar Resumen Ejecutivo (PDF)
+        </a>
+
         <footer>
             Dashboard Administrativo - Buenos Aires, 2026<br>
             <span class="signature">Realizado por Lic. Eduardo Moreno</span>
